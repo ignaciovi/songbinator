@@ -3,7 +3,7 @@ from flask import render_template
 import spotipy.oauth2 as oauth2
 import requests
 
-def submitArtist():
+def getSimilarArtists():
     creds = oauth2.SpotifyClientCredentials(client_id="c2d07b756064444495ab44c7d14d4a81", client_secret="c6bae7d2398d4098b0d1435d7a7cf486")
     token = creds.get_access_token()
 
