@@ -21,6 +21,10 @@ def getSongs():
     "https://api.spotify.com/v1/artists/{}/top-tracks?country=US".format(artist_id),
     headers={"Authorization": "Bearer {}".format(token)}).json()
 
-    songs =[track["name"] for track in spotify_id_request["tracks"]]
+    songs =[(track["name"], track["id"]) for track in spotify_id_request["tracks"]]
+
+    # Get track ids
+
+
 
     return songs
