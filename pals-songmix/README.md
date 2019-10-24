@@ -6,9 +6,9 @@ DONE
 S-1 Given an artist, get top tracks
 S-2 Create playlist from website
 S-3 Implement React
+S-4 Simple call react flask
 
 BACKLONG
-S-4 Simple call react flask
 S-5 Be able to create array of songs from multiple artists given
 S-6 Be able to take not only top tracks but random tracks
 S-7 Limit size of playlist depending on number of artists given

@@ -1,6 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios';
+
 
 interface IDispatchProps { 
   
@@ -27,6 +29,22 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     event.preventDefault();
   }
 
+  fetchArtists(name:string) {
+    axios.get('/submitArtist?name=' + name)
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
+
+  }
+
   render() {
     return (
       <div>
@@ -36,10 +54,8 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <p>{this.state.value}</p>
-        <form action = "/submitArtist" method = "POST">
-         <p>Artist for songs<input type = "text" name = "related_artists" /></p>
-         <p><input type = "submit" value = "submit" /></p>
-         </form>
+
+         <button onClick={() => this.fetchArtists(this.state.value)}>Go</button>
         
       </div>
     );

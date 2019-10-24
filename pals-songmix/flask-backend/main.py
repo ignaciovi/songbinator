@@ -11,19 +11,20 @@ import spotipy.util as util
 from spotipy import oauth2
 
 
-app = Flask(__name__)
+app = Flask("__main__")
 
 credentials = 0
 
 # When accessing route / we will automatically run the code below
-@app.route('/')
-def start():
-   return render_template('index.html')
+# @app.route('/')
+# def hello_world():
+#    return render_template('index.html')
 
-@app.route('/submitArtist', methods = ['POST', 'GET'])
+@app.route('/submitArtist', methods = ['GET'])
 def getSimilarArtistsResponse():
-   related_artists = getSimilarArtists()
-   return render_template('result.html', message = related_artists)
+   content = request.args.get('name')
+   print(content)
+   return getSimilarArtists(content)
 
 @app.route('/getSongs', methods = ['POST', 'GET'])
 def getSongsResponse():
