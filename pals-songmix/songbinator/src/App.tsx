@@ -1,28 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 
-interface IArtistTitle {
-  related_artists:IArtists[]
+interface ITracks {
+  tracks:ITrackDetails[]
 }
 
-interface IArtists {
-  name:string
+interface ITrackDetails {
+  track_name:string
+  track_id:string
 }
 
 interface IDispatchProps { 
-  
 };
+
 interface IStateProps { 
   value: string 
-  similarArtists:IArtistTitle
+  tracks_state:ITracks
 };
 
 export default class App extends React.Component<IDispatchProps, IStateProps> {
   constructor(props:IDispatchProps) {
     super(props);
-    this.state = {value: '', similarArtists: {related_artists:[{name:""}]}};
+    this.state = {value: '', tracks_state: {tracks:[{track_name:"", track_id:""}]}};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,15 +37,32 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     event.preventDefault();
   }
 
-  async fetchArtists(name:string) {
-    let result:any = {related_artists:[]};
+  async fetchTracks(name:string) {
+    let fetched_related_artists:any = {related_artists:[]};
+    let fetched_tracks:any = {tracks:[]};
+    let track_collection:any = []
+    let track_collection_dict:any = {tracks:[]};
+    
     try {
-      result = await axios.get('/submitArtist?name=' + name);
-      
-    } catch (error) {
-      
-    }
-    this.setState({similarArtists:result.data})
+      fetched_related_artists = await axios.get('/submitArtist?name=' + name);    
+    } catch (error) {}
+
+    let related_artists = fetched_related_artists.data.related_artists
+
+    try {
+
+      for (let artist of related_artists) {
+        fetched_tracks = await axios.get('/getSongs?name=' + artist["name"]);
+        track_collection = track_collection.concat(fetched_tracks.data.tracks)  
+      }
+
+      if (track_collection) {
+        track_collection_dict.tracks = track_collection
+      }
+  
+      this.setState({tracks_state:track_collection_dict})  
+ 
+    } catch (error) {}
   }
 
   render() {
@@ -57,12 +74,12 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
           <input type="text" value={this.state.value} onChange={this.handleChange} />
         </label>
         <p>{this.state.value}</p>
-        {this.state.similarArtists.related_artists && this.state.similarArtists.related_artists.map((artist) =>
+        {this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
           (
-            <p>{artist.name}</p>
+            <p>{item.track_name}</p>
           ))}
 
-         <button onClick={() => this.fetchArtists(this.state.value)}>Go</button>
+         <button onClick={() => this.fetchTracks(this.state.value)}>Go</button>
         
       </div>
     );

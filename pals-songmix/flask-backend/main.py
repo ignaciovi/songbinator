@@ -23,13 +23,12 @@ credentials = 0
 @app.route('/submitArtist', methods = ['GET'])
 def getSimilarArtistsResponse():
    content = request.args.get('name')
-   print(content)
    return getSimilarArtists(content)
 
-@app.route('/getSongs', methods = ['POST', 'GET'])
+@app.route('/getSongs', methods = ['GET'])
 def getSongsResponse():
-   songs = getSongs()
-   return render_template('result.html', message = songs)
+   content = request.args.get('name')
+   return getSongs(content)
 
 @app.route('/successLogin')
 def success():
