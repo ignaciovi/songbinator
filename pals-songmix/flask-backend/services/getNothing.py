@@ -1,0 +1,2 @@
+def getNothing():
+    return "nothing"

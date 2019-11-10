@@ -31,3 +31,21 @@
   align-items: center;
   /* padding: 0px 600px; */
 }
+
+.layout {
+  width:80%
+}
+
+.centered {
+  text-align:center
+}
+
+.flex {
+  display: flex;
+}
+
+.artistText {
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+}

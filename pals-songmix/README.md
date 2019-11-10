@@ -10,13 +10,16 @@ S-3 Implement React
 S-4 Simple call react flask
 S-5 Call similar artists from website
 S-6 Be able to create array of songs from multiple artists given
+S-7 Style
+S-8 Autocomplete feature
 
 BACKLONG
-S-7 Be able to take not only top tracks but random tracks
-S-8 Limit size of playlist depending on number of artists given
-S-9 Style website
-S-10 Be able to search for less popular similar artists
-S-11 Autocomplete search and verification for input
+Be able to take not only top tracks but random tracks
+Limit size of playlist depending on number of artists given
+Style website
+Be able to search for less popular similar artists
+Autocomplete search
+Verification for input
 
 
 # React

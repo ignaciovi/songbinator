@@ -3,6 +3,8 @@ from flask import render_template
 from services.getSimilarArtists import getSimilarArtists
 from services.getSongs import getSongs
 from services.getSpotifyLogin import getSpotifyLogin
+from services.getNothing import getNothing
+from services.getSuggestedArtists import getSuggestedArtists
 import webbrowser
 import spotipy
 import json
@@ -25,15 +27,24 @@ def getSimilarArtistsResponse():
    content = request.args.get('name')
    return getSimilarArtists(content)
 
+@app.route('/suggestedArtists', methods = ['GET'])
+def getSuggestedArtistsResponse():
+   content = request.args.get('name')
+   return getSuggestedArtists(content)
+
 @app.route('/getSongs', methods = ['GET'])
 def getSongsResponse():
    content = request.args.get('name')
    return getSongs(content)
 
-@app.route('/successLogin')
-def success():
-   getSpotifyLogin()
-   return render_template('successLogin.html')
+# @app.route('/successLogin')
+# def success():
+#    getSpotifyLogin()
+#    return render_template('successLogin.html')
+
+@app.route('/login')
+def login():
+   return getSpotifyLogin()
 
 @app.route('/successLoginDone')
 def ok():
@@ -62,7 +73,7 @@ def ok():
             "https://api.spotify.com/v1/users/ignaciovi21/playlists",
             headers={"Authorization": "Bearer {}".format(access_token2), "Content-Type": "application/json"}, json=data2)
 
-   return render_template('successLoginDone.html')
+   return getNothing()
 
 @app.route('/doubleok')
 def doubleok():
