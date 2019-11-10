@@ -13,17 +13,16 @@ S-6 Be able to create array of songs from multiple artists given
 S-7 Style
 S-8 Autocomplete feature
 S-9 Autocomplete improvement and disable features
+S-10 Check if artist is duplicated in selected
+S-11 Include songs of artist that we are inputing
 
 BACKLONG
-Be able to take not only top tracks but random tracks
-Limit size of playlist depending on number of artists given
 Style website
+Limit size of playlist depending on number of artists given
 Be able to search for less popular similar artists
-Be able to search for not only top tracks
-Autocomplete search
-Verification for input
-Include songs of artist that we are inputing
-
+Be able to take not only top tracks but random tracks
+Show stats of the playlist created. Is % happy and energetic...
+Option to filter in two different playlist
 
 # React
 All React components must act like pure functions with respect to their props.

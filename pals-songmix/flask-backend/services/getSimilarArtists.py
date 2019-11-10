@@ -19,6 +19,7 @@ def getSimilarArtists(artist_name):
 
     if spotify_id_request:
         related_artists = [{"name": artist["name"]} for artist in spotify_id_request["artists"]]
+        related_artists.append({"name": artist_name})
         related_artist_json = {"related_artists": related_artists}
 
 

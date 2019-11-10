@@ -22,7 +22,7 @@ credentials = 0
 # def hello_world():
 #    return render_template('index.html')
 
-@app.route('/submitArtist', methods = ['GET'])
+@app.route('/getSimilarArtists', methods = ['GET'])
 def getSimilarArtistsResponse():
    content = request.args.get('name')
    return getSimilarArtists(content)
