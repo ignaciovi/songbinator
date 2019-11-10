@@ -136,6 +136,12 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
         isAddDisabled = false
     }})
     let isGoDisabled:boolean = this.state.artist_list.length > 0 ? false : true
+    let isDuplicatedArtist:boolean = false
+    this.state.artist_list.map((item) =>
+    {
+      if (item === this.state.artist){
+        isDuplicatedArtist = true
+    }})
     
     return (
       <div className="searchFields">
@@ -164,7 +170,7 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
             )}
           />
             {/* <input type="text" className="input is-primary" onChange={this.handleChange} placeholder="Artist Name" /> */}
-            <button className="button" disabled={isAddDisabled} onClick={() => this.addArtist(this.state.artist)}>Add</button>
+            <button className="button" disabled={isAddDisabled || isDuplicatedArtist} onClick={() => this.addArtist(this.state.artist)}>Add</button>
             <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist)}>Go</button>
           </div>
 
