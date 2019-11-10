@@ -44,6 +44,12 @@
   display: flex;
 }
 
+.selectedArtist {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .artistText {
   justify-content: center;
   align-items: center;

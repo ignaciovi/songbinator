@@ -12,14 +12,17 @@ S-5 Call similar artists from website
 S-6 Be able to create array of songs from multiple artists given
 S-7 Style
 S-8 Autocomplete feature
+S-9 Autocomplete improvement and disable features
 
 BACKLONG
 Be able to take not only top tracks but random tracks
 Limit size of playlist depending on number of artists given
 Style website
 Be able to search for less popular similar artists
+Be able to search for not only top tracks
 Autocomplete search
 Verification for input
+Include songs of artist that we are inputing
 
 
 # React

@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import axios from 'axios';
 import 'bulma/css/bulma.css'
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import { TextField } from '@material-ui/core';
 //import { Button, InputProps } from "react-bulma-components";
 
 
@@ -37,20 +39,37 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
      loader:false, number_artists:1, artist_list:[], suggested_artists:[{name:""}]};
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleChangeAutocomplete = this.handleChangeAutocomplete.bind(this);
     this.handleIncrement = this.handleIncrement.bind(this);
     this.handleDecrement = this.handleDecrement.bind(this);
     this.addArtist = this.addArtist.bind(this);
+    this.removeArtist = this.removeArtist.bind(this);
   }
 
   async handleChange(event:any) {
     let fetched_suggested_artists:any = {suggested_artists:[]};
+    let fetched_suggested_artists_data:any[] = []
+    let artist_name_input:string = event.target.value
+    let artist_name_autocomplete:string = event.target.textContent
+    let artist_name:string
+  
+    fetched_suggested_artists = await axios.get('/suggestedArtists?name=' + artist_name_input); 
+    fetched_suggested_artists_data = fetched_suggested_artists.data.suggested_artists
 
-    this.setState({artist: event.target.value});
-    fetched_suggested_artists = await axios.get('/suggestedArtists?name=' + event.target.value); 
+    if (artist_name_autocomplete.length === 0) {
+      artist_name = artist_name_input
+    } else {
+      artist_name = artist_name_autocomplete
+    }
 
+    this.setState({artist: artist_name});
+    this.setState({suggested_artists: fetched_suggested_artists_data});
+  }
 
-    this.setState({suggested_artists: fetched_suggested_artists.data.suggested_artists});
+  async handleChangeAutocomplete(event:any) {
+    let artist_name_autocomplete:string = event.target.textContent
 
+    this.setState({artist: artist_name_autocomplete});
   }
 
   handleIncrement() {
@@ -64,6 +83,12 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
   addArtist(artist:string) {
     let artist_list:string[] = this.state.artist_list
     artist_list = artist_list.concat(artist)  
+    this.setState({artist_list: artist_list})
+  }
+
+  removeArtist(index:number) {
+    let artist_list:string[] = this.state.artist_list
+    artist_list.splice(index,1)
     this.setState({artist_list: artist_list})
   }
 
@@ -104,6 +129,14 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
   }
 
   render() {
+    let isAddDisabled:boolean = true
+    this.state.suggested_artists.map((item) =>
+    {
+      if (item.name === this.state.artist && this.state.artist !== ""){
+        isAddDisabled = false
+    }})
+    let isGoDisabled:boolean = this.state.artist_list.length > 0 ? false : true
+    
     return (
       <div className="searchFields">
 
@@ -117,19 +150,30 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
           </div>        
         </div> */}
 
+        
+
         <div className="column centered">
           <div className="box flex">
-            <input type="text" className="input is-primary" onChange={this.handleChange} placeholder="Artist Name" />
-            <button className="button" onClick={() => this.addArtist(this.state.artist)}>Add</button>
-            <button className="button" onClick={() => this.fetchTracks(this.state.artist)}>Go</button>
+            <Autocomplete
+            freeSolo
+            options={this.state.suggested_artists}
+            getOptionLabel={option => option.name}
+            onChange={this.handleChangeAutocomplete}
+            renderInput={params => (
+              <TextField {...params} label="Artist Name" variant="outlined" fullWidth onChange={this.handleChange} />
+            )}
+          />
+            {/* <input type="text" className="input is-primary" onChange={this.handleChange} placeholder="Artist Name" /> */}
+            <button className="button" disabled={isAddDisabled} onClick={() => this.addArtist(this.state.artist)}>Add</button>
+            <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist)}>Go</button>
           </div>
 
 
-          {this.state.artist !== "" && this.state.suggested_artists.map((item) => {
+          {/* {this.state.artist !== "" && this.state.suggested_artists.map((item) => {
             return <p>{item.name}</p>
             }
           )
-          }
+          } */}
 
           {this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
             (
@@ -139,9 +183,14 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
         </div>
         <div className="column centered">
         {this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
-          {this.state.artist_list.map((item) =>
+          {this.state.artist_list.map((item, index) =>
             (
-              <div className="box"><p>{item}</p></div>
+              <div className="box" key={index}>
+                <div className="selectedArtist">
+                  <p>{item}</p>
+                  <button className="button" onClick={() => this.removeArtist(index)}>X</button>
+                  </div>
+                </div>
             ))
           }
         </div> 
