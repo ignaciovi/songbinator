@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask import render_template
+from random import shuffle
 import spotipy.oauth2 as oauth2
 import requests
 
@@ -24,6 +25,8 @@ def getSongs(artist_name):
   # Get track ids
   if spotify_id_request:
     songs = ([{"track_name": track["name"], "track_id": track["id"]} for track in spotify_id_request["tracks"]])
-    songs_json = {"tracks": songs}
+    if (len(songs) > 5):
+      shuffle(songs)
+    songs_json = {"tracks": songs[0:5]}
 
     return songs_json

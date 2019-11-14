@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: black;
 }
 
 .App-logo {
@@ -54,4 +55,24 @@
   justify-content: center;
   align-items: center;
   font-size: 40px;
+}
+
+.menuButtons {
+  padding:10px
+}
+
+.fixedSizeDiv {
+  height:500px
+}
+
+.artistComponent {
+  flex-basis:48%;
+  height:70px
+}
+
+.artistContainer{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  flex-wrap: wrap;
 }

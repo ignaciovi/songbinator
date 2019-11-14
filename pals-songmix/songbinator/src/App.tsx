@@ -15,7 +15,7 @@ interface ITrackDetails {
   track_id:string
 }
 
-interface ISuggestedArtist {
+interface IArtist {
   name:string
 }
 
@@ -27,15 +27,15 @@ interface IStateProps {
   tracks_state:ITracks
   loader:boolean
   number_artists: number
-  artist_list:string[]
-  suggested_artists:ISuggestedArtist[]
+  artist_list:IArtist[]
+  suggested_artists:IArtist[]
 };
 
 export default class App extends React.Component<IDispatchProps, IStateProps> {
   constructor(props:IDispatchProps) {
     super(props);
     this.state = {artist: '', tracks_state: {tracks:[{track_name:"", track_id:""}]},
-     loader:false, number_artists:1, artist_list:[], suggested_artists:[{name:""}]};
+     loader:false, number_artists:1, artist_list:[], suggested_artists:[]};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeAutocomplete = this.handleChangeAutocomplete.bind(this);
@@ -62,18 +62,28 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
   }
 
   addArtist(artist:string) {
-    let artist_list:string[] = this.state.artist_list
-    artist_list = artist_list.concat(artist)  
+    let artist_list:IArtist[] = this.state.artist_list
+    artist_list = artist_list.concat({name:artist})  
     this.setState({artist_list: artist_list})
+    this.setState({artist:""})
   }
 
   removeArtist(index:number) {
-    let artist_list:string[] = this.state.artist_list
+    let artist_list:IArtist[] = this.state.artist_list
     artist_list.splice(index,1)
     this.setState({artist_list: artist_list})
   }
 
-  async fetchTracks(name:string) {
+  async createPlay() {
+
+
+    try {
+      let playlist = await axios.get('/playlist');
+    } catch (error) {}
+
+  }
+
+  async fetchTracks(input_artists:IArtist[]) {
     let fetched_related_artists:any = {related_artists:[]};
     let fetched_tracks:any = {tracks:[]};
     let track_collection:any = []
@@ -82,35 +92,35 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     this.setState({loader:true})  
  
     try {
-      fetched_related_artists = await axios.get('/getSimilarArtists?name=' + name);    
+      for (let input_artist of input_artists) {
+        fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name);    
+
+        let related_artists:IArtist[] = fetched_related_artists.data.related_artists
+
+        for (let related_artist of related_artists) {
+          fetched_tracks = await axios.get('/getSongs?name=' + related_artist.name);
+          track_collection = track_collection.concat(fetched_tracks.data.tracks)  
+        }
+
+        if (track_collection) {
+          track_collection_dict.tracks = track_collection
+        }
+      }
     } catch (error) {}
-
-    let related_artists = fetched_related_artists.data.related_artists
-
-    try {
-      for (let artist of related_artists) {
-        fetched_tracks = await axios.get('/getSongs?name=' + artist["name"]);
-        track_collection = track_collection.concat(fetched_tracks.data.tracks)  
-      }
-
-      if (track_collection) {
-        track_collection_dict.tracks = track_collection
-      }
-  
+    
       this.setState({tracks_state:track_collection_dict})  
       this.setState({loader:false})  
 
-      // let login = await axios.get('/login');
-      // if (login) {
-      //   // nothing
-      // }
+      let login = await axios.get('/login');
+      if (login) {
+        let createPlaylist = await axios.get('/successLoginDone');
+      }
  
-    } catch (error) {}
   }
 
   render() {
     let isAddDisabled:boolean = true
-    this.state.suggested_artists.map((item) =>
+    this.state.suggested_artists && this.state.suggested_artists.map((item) =>
     {
       if (item.name === this.state.artist && this.state.artist !== ""){
         isAddDisabled = false
@@ -119,12 +129,14 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     let isDuplicatedArtist:boolean = false
     this.state.artist_list.map((item) =>
     {
-      if (item === this.state.artist){
+      if (item.name === this.state.artist){
         isDuplicatedArtist = true
     }})
     
     return (
       <div className="searchFields">
+
+        {window.location.href}
 
         {!this.state.loader ? <div className="columns layout">   
 
@@ -135,13 +147,28 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
             options={this.state.suggested_artists}
             getOptionLabel={option => option.name}
             onChange={this.handleChangeAutocomplete}
+            
             renderInput={params => (
-              <TextField {...params} label="Artist Name" variant="outlined" fullWidth onChange={this.handleChange} />
-            )}
-          />
+              <TextField {...params} label="Artist Name" variant="outlined" fullWidth value={this.state.artist}
+              onChange={this.handleChange} />
+                  )}
+            />
             {/* <input type="text" className="input is-primary" onChange={this.handleChange} placeholder="Artist Name" /> */}
-            <button className="button" disabled={isAddDisabled || isDuplicatedArtist} onClick={() => this.addArtist(this.state.artist)}>Add</button>
-            <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist)}>Go</button>
+            <div className="menuButtons">
+              <button className="button" disabled={isAddDisabled || isDuplicatedArtist} 
+                onClick={() => this.addArtist(this.state.artist)}>Add</button>
+              <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist_list)}>Go</button>
+              
+              
+              <a
+                href={`https://accounts.spotify.com/authorize?client_id=b9147e7fb3954d24a264480d4a63700d&redirect_uri=http://127.0.0.1:5000/successLoginDone&scope=playlist-modify-public playlist-modify-private&response_type=code`}
+                style={{ textDecoration: 'none' }}
+            >Login2</a>
+              
+  
+              
+              <button className="button" disabled={false} onClick={() => this.createPlay()}>Create playlist</button>
+            </div>
           </div>
 
           {this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
@@ -151,22 +178,23 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
           }
         </div>
 
-        <div className="column centered">
-        {this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
-          {this.state.artist_list.map((item, index) =>
-            (
-              <div className="box" key={index}>
-                <div className="selectedArtist">
-                  <p>{item}</p>
-                  <button className="button" onClick={() => this.removeArtist(index)}>X</button>
-                  </div>
-                </div>
-            ))
-          }
+        <div className="column centered fixedSizeDiv">
+          <div className="artistContainer">
+            {this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
+              {this.state.artist_list && this.state.artist_list.map((item, index) =>
+                (
+                  <div className="box artistComponent" key={index}>
+                    <div className="selectedArtist">
+                      <p>{item.name}</p>
+                      <button className="button" onClick={() => this.removeArtist(index)}>X</button>
+                      </div>
+                    </div>
+                ))
+              }
+          </div>
         </div> 
-        </div> : <p>Loading...</p>}
-         
-      </div>
+      </div> : <p>Loading...</p>}   
+    </div>
     );
   }
 }

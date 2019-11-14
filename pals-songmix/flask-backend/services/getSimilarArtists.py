@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask import render_template
+from random import shuffle
 import spotipy.oauth2 as oauth2
 import requests
 
@@ -20,8 +21,8 @@ def getSimilarArtists(artist_name):
     if spotify_id_request:
         related_artists = [{"name": artist["name"]} for artist in spotify_id_request["artists"]]
         related_artists.append({"name": artist_name})
-        related_artist_json = {"related_artists": related_artists}
-
-
+        if (len(related_artists) > 5):
+            shuffle(related_artists)
+        related_artist_json = {"related_artists": related_artists[0:5]}
 
     return related_artist_json
