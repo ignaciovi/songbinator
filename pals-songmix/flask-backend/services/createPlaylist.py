@@ -4,7 +4,7 @@ import json
 
 
 def createPlaylist():
-    code = request.cookies.get("spoty_code")
+    code = request.cookies.get("spotify_code")
 
     code_payload = {
         "grant_type": "authorization_code",
@@ -25,10 +25,33 @@ def createPlaylist():
 
     }
 
-    requests.post(
+    #TODO need to put objective user, not mine hardcoded
+    created_playlist = requests.post(
                 "https://api.spotify.com/v1/users/ignaciovi21/playlists",
                 headers={"Authorization": "Bearer {}".format(access_token2), "Content-Type": "application/json"}, json=data2)
 
-        # print("THis is the client")
-        # print(spotifyClient)
-        # spotifyClient.user_playlist_create("ignaciovi21", "TestPlaylist", False)
+    print(created_playlist.json()["id"])
+
+    playlist_id = created_playlist.json()["id"]
+
+    # spotify_id_request = requests.get(
+    #     "https://api.spotify.com/v1/me/playlists",
+    #     headers={"Authorization": "Bearer {}".format(access_token2)}).json()
+
+    # for playlist in spotify_id_request["items"]:
+    #     if playlist["name"] == "New Playlist":
+    #         print(playlist["name"])
+    #         playlist_id = playlist["id"]
+
+    data2=  {
+        "uris": ["spotify:track:4iV5W9uYEdYUVa79Axb7Rh"]
+    }
+
+    requests.post(
+                "https://api.spotify.com/v1/playlists/{}/tracks".format(playlist_id),
+                headers={"Authorization": "Bearer {}".format(access_token2), "Content-Type": "application/json"}, json=data2)
+
+    
+
+    
+

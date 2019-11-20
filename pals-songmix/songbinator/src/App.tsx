@@ -1,4 +1,5 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import './App.css';
 import axios from 'axios';
 import 'bulma/css/bulma.css'
@@ -74,11 +75,9 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     this.setState({artist_list: artist_list})
   }
 
-  async createPlay() {
-
-
+  async createPlaylist() {
     try {
-      let playlist = await axios.get('/playlist');
+      let playlist = await axios.get('/createPlaylist');
     } catch (error) {}
 
   }
@@ -111,10 +110,14 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
       this.setState({tracks_state:track_collection_dict})  
       this.setState({loader:false})  
 
-      let login = await axios.get('/login');
-      if (login) {
-        let createPlaylist = await axios.get('/successLoginDone');
-      }
+      // We can call here the playlist creation and add the first song to the playlist
+
+
+      // We are loading in another way
+      // let login = await axios.get('/login');
+      // if (login) {
+      //   let createPlaylist = await axios.get('/successLoginDone');
+      // }
  
   }
 
@@ -132,69 +135,68 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
       if (item.name === this.state.artist){
         isDuplicatedArtist = true
     }})
+
+    const logged = Cookies.get('spotify_code') === undefined ? false : true;
     
     return (
       <div className="searchFields">
 
-        {window.location.href}
+        {!logged ?       
+          <div>
+            <button className="button"><a
+              href={`https://accounts.spotify.com/authorize?client_id=b9147e7fb3954d24a264480d4a63700d&redirect_uri=http://127.0.0.1:5000/successLoginDone&scope=playlist-modify-public playlist-modify-private playlist-read-private&response_type=code`}
+              >Login</a>
+            </button>
+          </div> : 
+          <div>
+            {!this.state.loader ? <div className="columns layout">   
 
-        {!this.state.loader ? <div className="columns layout">   
+            <div className="column centered">
+              <div className="box flex">
+                <Autocomplete
+                freeSolo
+                options={this.state.suggested_artists}
+                getOptionLabel={option => option.name}
+                onChange={this.handleChangeAutocomplete}
+                
+                renderInput={params => (
+                  <TextField {...params} label="Artist Name" variant="outlined" fullWidth value={this.state.artist}
+                  onChange={this.handleChange} />
+                      )}
+                />
+                <div className="menuButtons">
+                  <button className="button" disabled={isAddDisabled || isDuplicatedArtist} 
+                    onClick={() => this.addArtist(this.state.artist)}>Add</button>
+                  <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist_list)}>Go</button>
 
-        <div className="column centered">
-          <div className="box flex">
-            <Autocomplete
-            freeSolo
-            options={this.state.suggested_artists}
-            getOptionLabel={option => option.name}
-            onChange={this.handleChangeAutocomplete}
-            
-            renderInput={params => (
-              <TextField {...params} label="Artist Name" variant="outlined" fullWidth value={this.state.artist}
-              onChange={this.handleChange} />
-                  )}
-            />
-            {/* <input type="text" className="input is-primary" onChange={this.handleChange} placeholder="Artist Name" /> */}
-            <div className="menuButtons">
-              <button className="button" disabled={isAddDisabled || isDuplicatedArtist} 
-                onClick={() => this.addArtist(this.state.artist)}>Add</button>
-              <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist_list)}>Go</button>
-              
-              
-              <a
-                href={`https://accounts.spotify.com/authorize?client_id=b9147e7fb3954d24a264480d4a63700d&redirect_uri=http://127.0.0.1:5000/successLoginDone&scope=playlist-modify-public playlist-modify-private&response_type=code`}
-                style={{ textDecoration: 'none' }}
-            >Login2</a>
-              
-  
-              
-              <button className="button" disabled={false} onClick={() => this.createPlay()}>Create playlist</button>
-            </div>
-          </div>
+                  <button className="button" disabled={false} onClick={() => this.createPlaylist()}>Create playlist</button>
+                </div>
+              </div>
 
-          {this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
-            (
-              <p>{item.track_name}</p>
-            ))
-          }
-        </div>
-
-        <div className="column centered fixedSizeDiv">
-          <div className="artistContainer">
-            {this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
-              {this.state.artist_list && this.state.artist_list.map((item, index) =>
+              {this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
                 (
-                  <div className="box artistComponent" key={index}>
-                    <div className="selectedArtist">
-                      <p>{item.name}</p>
-                      <button className="button" onClick={() => this.removeArtist(index)}>X</button>
-                      </div>
-                    </div>
+                  <p>{item.track_name}</p>
                 ))
               }
-          </div>
-        </div> 
-      </div> : <p>Loading...</p>}   
-    </div>
+            </div>
+
+            <div className="column centered fixedSizeDiv">
+              <div className="artistContainer">
+                {this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
+                  {this.state.artist_list && this.state.artist_list.map((item, index) =>
+                    (
+                      <div className="box artistComponent" key={index}>
+                        <div className="selectedArtist">
+                          <p>{item.name}</p>
+                          <button className="button" onClick={() => this.removeArtist(index)}>X</button>
+                          </div>
+                        </div>
+                    ))
+                  }
+              </div>
+            </div> 
+          </div> : <p>Loading...</p>}</div>}   
+        </div>
     );
   }
 }
