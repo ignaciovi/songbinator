@@ -29,4 +29,7 @@ def getSongs(artist_name):
       shuffle(songs)
     songs_json = {"tracks": songs[0:5]}
 
+    
+    print(songs_json)
+
     return songs_json

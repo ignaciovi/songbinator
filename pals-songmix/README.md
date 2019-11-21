@@ -17,7 +17,8 @@ S-9 Autocomplete improvement and disable features
 S-10 Check if artist is duplicated in selected
 S-11 Include songs of artist that we are inputing
 S-12 Call to login and create playlist features
-S-12 Differentiate login and logged, create playlist and add song
+S-13 Differentiate login and logged, create playlist and add song
+S-14 Add first song of the input artist to the playlist
 
 BACKLONG
 Style of displaying artist

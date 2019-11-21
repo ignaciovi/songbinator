@@ -75,9 +75,12 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     this.setState({artist_list: artist_list})
   }
 
-  async createPlaylist() {
+  async createPlaylist(tracks:ITracks) {
     try {
       let playlist = await axios.get('/createPlaylist');
+      console.log(playlist)
+      let add_track = await axios.get('/addTrack?track=' + tracks.tracks[0].track_id + "&token=" + playlist.data.token + "&playlist=" + playlist.data.playlist_id);
+      
     } catch (error) {}
 
   }
@@ -109,16 +112,6 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
     
       this.setState({tracks_state:track_collection_dict})  
       this.setState({loader:false})  
-
-      // We can call here the playlist creation and add the first song to the playlist
-
-
-      // We are loading in another way
-      // let login = await axios.get('/login');
-      // if (login) {
-      //   let createPlaylist = await axios.get('/successLoginDone');
-      // }
- 
   }
 
   render() {
@@ -143,8 +136,8 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
 
         {!logged ?       
           <div>
-            <button className="button"><a
-              href={`https://accounts.spotify.com/authorize?client_id=b9147e7fb3954d24a264480d4a63700d&redirect_uri=http://127.0.0.1:5000/successLoginDone&scope=playlist-modify-public playlist-modify-private playlist-read-private&response_type=code`}
+            <button className="button">
+              <a href={`https://accounts.spotify.com/authorize?client_id=b9147e7fb3954d24a264480d4a63700d&redirect_uri=http://127.0.0.1:5000/successLoginDone&scope=playlist-modify-public playlist-modify-private playlist-read-private&response_type=code`}
               >Login</a>
             </button>
           </div> : 
@@ -169,7 +162,7 @@ export default class App extends React.Component<IDispatchProps, IStateProps> {
                     onClick={() => this.addArtist(this.state.artist)}>Add</button>
                   <button className="button" disabled={isGoDisabled} onClick={() => this.fetchTracks(this.state.artist_list)}>Go</button>
 
-                  <button className="button" disabled={false} onClick={() => this.createPlaylist()}>Create playlist</button>
+                  <button className="button" disabled={false} onClick={() => this.createPlaylist(this.state.tracks_state)}>Create playlist</button>
                 </div>
               </div>
 

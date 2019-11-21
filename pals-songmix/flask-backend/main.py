@@ -2,17 +2,17 @@ from flask import Flask, request, make_response
 from flask import render_template
 from services.getSimilarArtists import getSimilarArtists
 from services.getSongs import getSongs
-from services.getSpotifyLogin import getSpotifyLogin
 from services.getNothing import getNothing
 from services.getSuggestedArtists import getSuggestedArtists
 from services.createPlaylist import createPlaylist
+from services.addTracksToPlaylist import addTrackToPlaylist
 import webbrowser
 import spotipy
 import json
 import requests
 import spotipy.util as util
 from spotipy import oauth2
-
+import flask
 
 app = Flask("__main__")
 
@@ -40,6 +40,13 @@ def getSongsResponse():
 @app.route('/createPlaylist')
 def playlist():
    return createPlaylist()
+
+@app.route('/addTrack', methods =  ['GET'])
+def addTrack():
+   content = request.args.get('track')
+   playlist = request.args.get('playlist')
+   token = request.args.get('token')
+   return addTrackToPlaylist(content, token, playlist)
 
 @app.route('/successLoginDone')
 def ok():
