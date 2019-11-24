@@ -1,2 +1,0 @@
-def getNothing():
-    return "nothing"

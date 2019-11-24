@@ -2,7 +2,6 @@ from flask import Flask, request, make_response
 from flask import render_template
 from services.getSimilarArtists import getSimilarArtists
 from services.getSongs import getSongs
-from services.getNothing import getNothing
 from services.getSuggestedArtists import getSuggestedArtists
 from services.createPlaylist import createPlaylist
 from services.addTracksToPlaylist import addTracksToPlaylist
@@ -23,14 +22,15 @@ def main():
 @app.route('/getSimilarArtists', methods = ['GET'])
 def getSimilarArtistsResponse():
    content = request.args.get('name')
-   return getSimilarArtists(content)
+   artists_length = request.args.get('artists')
+   return getSimilarArtists(content,artists_length)
 
 @app.route('/getSuggestedArtists', methods = ['GET'])
 def getSuggestedArtistsResponse():
    content = request.args.get('name')
    return getSuggestedArtists(content)
 
-@app.route('/getSongs', methods = ['GET'])
+@app.route('/getTracks', methods = ['GET'])
 def getSongsResponse():
    content = request.args.get('name')
    return getSongs(content)
@@ -44,7 +44,7 @@ def addTrack():
    return addTracksToPlaylist(request.get_json()["tracks"], request.get_json()["token"], request.get_json()["playlist"])
 
 @app.route('/successLoginDone')
-def ok():
+def successLoginDone():
    code = request.args['code']
    response = make_response(render_template('index.html'))
    response.set_cookie("spotify_code", code)

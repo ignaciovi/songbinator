@@ -21,21 +21,24 @@ S-13 Differentiate login and logged, create playlist and add song
 S-14 Add first song of the input artist to the playlist
 S-15 Refactor
 S-16 Remove duplicate similar artists
+S-17 Playlist size algorithm
 
 BACKLOG
+One token login. Avoid multiple logins
 Style of displaying artist
 Style website
 Limit size of playlist depending on number of artists given
-Be able to search for less popular similar artists
-Be able to take not only top tracks but random tracks
-Show stats of the playlist created. Is % happy and energetic...
-Option to filter in two different playlist
 Contemplate rate limit for API
 Change tab icon and tab description
 On press ENTER -> add
 Add image within artist
 Be able to change title playlist
 Delete input when adding the song
+Be able to search for less popular similar artists
+Be able to take not only top tracks but random tracks
+Show stats of the playlist created. Is % happy and energetic...
+Option to filter in two different playlist
+
 
 
 # React

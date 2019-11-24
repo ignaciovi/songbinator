@@ -19,7 +19,7 @@ def createPlaylist():
     response_data = json.loads(post_request.text)
     access_token = response_data["access_token"]
 
-    data2=  {
+    payload=  {
         "name": "New Playlist",
         "description": "New playlist description",
         "public": False
@@ -28,7 +28,7 @@ def createPlaylist():
     #TODO need to put objective user, not mine hardcoded
     created_playlist = requests.post(
                 "https://api.spotify.com/v1/users/ignaciovi21/playlists",
-                headers={"Authorization": "Bearer {}".format(access_token), "Content-Type": "application/json"}, json=data2)
+                headers={"Authorization": "Bearer {}".format(access_token), "Content-Type": "application/json"}, json=payload)
 
     playlist_id = created_playlist.json()["id"]
     

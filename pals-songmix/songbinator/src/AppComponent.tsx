@@ -86,8 +86,10 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 	
 		try {
 			for (let input_artist of this.state.artist_list) {
-				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name);    
+				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artist_list.length);    
 				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
+				console.log("ARTIIIIIIST")
+				console.log(related_artists)
 			}
 
 			let related_artists_filter_dup = related_artists.reduce((unique:IArtist[], o:IArtist) => {
@@ -97,14 +99,21 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 				return unique;
 			},[]);
 
+			console.log("ALLLLLLLLLLLLLLLLLL OF THEEEEEEEEEEEEEEEM")
+			console.log(related_artists_filter_dup)
+
+
 			for (let related_artist of related_artists_filter_dup) {
-				fetched_tracks = await axios.get('/getSongs?name=' + related_artist.name);
+				fetched_tracks = await axios.get('/getTracks?name=' + related_artist.name);
 				track_collection = track_collection.concat(fetched_tracks.data.tracks)  
 			}
 
 			if (track_collection) {
-				track_collection_dict.tracks = track_collection.slice(0,5)
+				track_collection_dict.tracks = track_collection
 			}
+
+			console.log("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
+			console.log(track_collection)
 		
 			this.setState({tracks_state:track_collection_dict})  
 

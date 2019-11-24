@@ -10,8 +10,10 @@ def addTracksToPlaylist(tracks, token, playlist):
         "uris": track_list
     }
 
+    print("GOOD JOB")
+
     requests.post(
                 "https://api.spotify.com/v1/playlists/{}/tracks".format(playlist),
                 headers={"Authorization": "Bearer {}".format(token), "Content-Type": "application/json"}, json=payload)
 
-    return "OK"
+    return "Success"
