@@ -4,7 +4,7 @@ import json
 import flask
 
 
-def addTrackToPlaylist(tracks, token, playlist):
+def addTracksToPlaylist(tracks, token, playlist):
     track_list = ["spotify:track:" + track["track_id"] for track in tracks["tracks"]]
     payload=  {
         "uris": track_list

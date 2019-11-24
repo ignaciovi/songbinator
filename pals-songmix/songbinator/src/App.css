@@ -1,78 +1,11 @@
 .App {
   text-align: center;
-  background-color: black;
-}
-
-.App-logo {
-  height: 40vmin;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #09d3ac;
-}
-
-.searchFields {
   overflow: hidden;
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* padding: 0px 600px; */
-}
-
-.layout {
-  width:80%
-}
-
-.centered {
-  text-align:center
-}
-
-.flex {
-  display: flex;
-}
-
-.selectedArtist {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.artistText {
-  justify-content: center;
-  align-items: center;
-  font-size: 40px;
-}
-
-.menuButtons {
-  padding:10px
-}
-
-.fixedSizeDiv {
-  height:500px
-}
-
-.artistComponent {
-  flex-basis:48%;
-  height:70px
-}
-
-.artistContainer{
-  display:flex;
-  flex-direction:row;
-  justify-content:space-between;
-  flex-wrap: wrap;
+  margin-top:300px;
 }

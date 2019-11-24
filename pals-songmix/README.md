@@ -20,6 +20,7 @@ S-12 Call to login and create playlist features
 S-13 Differentiate login and logged, create playlist and add song
 S-14 Add first song of the input artist to the playlist
 S-15 Refactor
+S-16 Remove duplicate similar artists
 
 BACKLOG
 Style of displaying artist
@@ -34,6 +35,8 @@ Change tab icon and tab description
 On press ENTER -> add
 Add image within artist
 Be able to change title playlist
+Delete input when adding the song
+
 
 # React
 All React components must act like pure functions with respect to their props.

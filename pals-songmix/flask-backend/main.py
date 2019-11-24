@@ -5,7 +5,7 @@ from services.getSongs import getSongs
 from services.getNothing import getNothing
 from services.getSuggestedArtists import getSuggestedArtists
 from services.createPlaylist import createPlaylist
-from services.addTracksToPlaylist import addTrackToPlaylist
+from services.addTracksToPlaylist import addTracksToPlaylist
 import webbrowser
 import spotipy
 import json
@@ -25,7 +25,7 @@ def getSimilarArtistsResponse():
    content = request.args.get('name')
    return getSimilarArtists(content)
 
-@app.route('/suggestedArtists', methods = ['GET'])
+@app.route('/getSuggestedArtists', methods = ['GET'])
 def getSuggestedArtistsResponse():
    content = request.args.get('name')
    return getSuggestedArtists(content)
@@ -39,9 +39,9 @@ def getSongsResponse():
 def playlist():
    return createPlaylist()
 
-@app.route('/addTrack', methods =  ['POST'])
+@app.route('/addTracks', methods =  ['POST'])
 def addTrack():
-   return addTrackToPlaylist(request.get_json()["tracks"], request.get_json()["token"], request.get_json()["playlist"])
+   return addTracksToPlaylist(request.get_json()["tracks"], request.get_json()["token"], request.get_json()["playlist"])
 
 @app.route('/successLoginDone')
 def ok():
