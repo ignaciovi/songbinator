@@ -16,8 +16,6 @@ import flask
 
 app = Flask("__main__")
 
-credentials = 0
-
 @app.route('/')
 def main():
     return render_template('index.html')
@@ -41,12 +39,9 @@ def getSongsResponse():
 def playlist():
    return createPlaylist()
 
-@app.route('/addTrack', methods =  ['GET'])
+@app.route('/addTrack', methods =  ['POST'])
 def addTrack():
-   content = request.args.get('track')
-   playlist = request.args.get('playlist')
-   token = request.args.get('token')
-   return addTrackToPlaylist(content, token, playlist)
+   return addTrackToPlaylist(request.get_json()["tracks"], request.get_json()["token"], request.get_json()["playlist"])
 
 @app.route('/successLoginDone')
 def ok():

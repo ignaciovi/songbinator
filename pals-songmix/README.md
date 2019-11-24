@@ -19,8 +19,9 @@ S-11 Include songs of artist that we are inputing
 S-12 Call to login and create playlist features
 S-13 Differentiate login and logged, create playlist and add song
 S-14 Add first song of the input artist to the playlist
+S-15 Refactor
 
-BACKLONG
+BACKLOG
 Style of displaying artist
 Style website
 Limit size of playlist depending on number of artists given

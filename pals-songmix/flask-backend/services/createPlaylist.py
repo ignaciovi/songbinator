@@ -31,8 +31,6 @@ def createPlaylist():
                 headers={"Authorization": "Bearer {}".format(access_token), "Content-Type": "application/json"}, json=data2)
 
     playlist_id = created_playlist.json()["id"]
-
-    print({"token": access_token, "playlist_id": playlist_id})
     
     return {"token": access_token, "playlist_id": playlist_id}
     
