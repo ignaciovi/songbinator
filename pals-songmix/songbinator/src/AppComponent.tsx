@@ -19,7 +19,6 @@ interface ITracks {
   
   interface IPayload {
     tracks:ITracks
-    token:string
     playlist:string
   }
   
@@ -111,7 +110,6 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			let playlist = await axios.get('/createPlaylist');
 
 			const payload:IPayload = {tracks:this.state.tracks_state, 
-				token:playlist.data.token, 
 				playlist:playlist.data.playlist_id}
 
 			await axios.post('/addTracks', payload)

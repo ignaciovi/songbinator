@@ -23,9 +23,10 @@ S-15 Refactor
 S-16 Remove duplicate similar artists
 S-17 Playlist size algorithm
 S-18 Remove hardcoded user and animation effects added
+S-19 One token login. Avoid multiple logins
 
 BACKLOG
-One token login. Avoid multiple logins
+Delete tokens when refreshing
 Style of displaying artist
 Style website
 Contemplate rate limit for API
@@ -34,6 +35,7 @@ On press ENTER -> add
 Add image within artist
 Be able to change title playlist
 Delete input when adding the song
+
 Be able to search for less popular similar artists
 Be able to take not only top tracks but random tracks
 Show stats of the playlist created. Is % happy and energetic...
