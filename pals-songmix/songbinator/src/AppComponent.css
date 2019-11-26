@@ -1,0 +1,65 @@
+.mainComponent {
+    display: flex;
+    text-align:center;
+}
+
+.inputBox {
+    display: flex;
+    text-align:center;
+    height:150px;
+}
+
+.artistList {
+    text-align:center;
+    height:500px;
+}
+
+.selectedArtist {
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.artistText {
+justify-content: center;
+align-items: center;
+font-size: 40px;
+}
+
+.menuButtons {
+padding:10px;
+}
+
+.XButton {
+    margin-left:10px;
+}
+
+.artistComponent {
+height:70px;
+width:180px;
+justify-content: center;
+align-items: center;
+margin:5px;
+}
+  
+.artistContainer{
+display:flex;
+flex-direction:row;
+flex-wrap: wrap;
+padding:30px;
+width:650px;
+justify-content:center;
+}
+
+#boxEffect {
+    animation: createBox .25s;
+}
+
+@keyframes createBox {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
