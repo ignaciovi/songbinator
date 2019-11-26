@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './Login.css';
 
 export class Login extends React.Component {
   redirect() {
@@ -9,7 +10,8 @@ export class Login extends React.Component {
   render() {
     return (
         <div> 
-            <button className="button" onClick={() => this.redirect()}>
+          {/* Green button and using bulma */}
+            <button className="button" id="monitor" onClick={() => this.redirect()}>
                 Login
             </button>
         </div>

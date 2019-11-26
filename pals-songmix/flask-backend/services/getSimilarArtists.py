@@ -29,7 +29,4 @@ def getSimilarArtists(artist_name,artists_length):
 
         related_artist_json = {"related_artists": all_artists[0:suggested_length]}
 
-        print("VENGAAAAAAAAAAAAAAAAAAAAAAAAA")
-        print(related_artist_json)
-
     return related_artist_json

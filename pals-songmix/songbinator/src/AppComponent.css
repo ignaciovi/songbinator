@@ -50,3 +50,16 @@ padding:30px;
 width:650px;
 justify-content:center;
 }
+
+#boxEffect {
+    animation: createBox .25s;
+}
+
+@keyframes createBox {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }

@@ -22,12 +22,12 @@ S-14 Add first song of the input artist to the playlist
 S-15 Refactor
 S-16 Remove duplicate similar artists
 S-17 Playlist size algorithm
+S-18 Remove hardcoded user and animation effects added
 
 BACKLOG
 One token login. Avoid multiple logins
 Style of displaying artist
 Style website
-Limit size of playlist depending on number of artists given
 Contemplate rate limit for API
 Change tab icon and tab description
 On press ENTER -> add
@@ -44,3 +44,7 @@ Option to filter in two different playlist
 # React
 All React components must act like pure functions with respect to their props.
 The render method will be called each time an update happens
+
+
+# Reference
+https://github.com/Kvaibhav01/Landing-Page-Animation

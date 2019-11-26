@@ -88,8 +88,6 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			for (let input_artist of this.state.artist_list) {
 				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artist_list.length);    
 				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
-				console.log("ARTIIIIIIST")
-				console.log(related_artists)
 			}
 
 			let related_artists_filter_dup = related_artists.reduce((unique:IArtist[], o:IArtist) => {
@@ -98,10 +96,6 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 				}
 				return unique;
 			},[]);
-
-			console.log("ALLLLLLLLLLLLLLLLLL OF THEEEEEEEEEEEEEEEM")
-			console.log(related_artists_filter_dup)
-
 
 			for (let related_artist of related_artists_filter_dup) {
 				fetched_tracks = await axios.get('/getTracks?name=' + related_artist.name);
@@ -112,9 +106,6 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 				track_collection_dict.tracks = track_collection
 			}
 
-			console.log("YEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE")
-			console.log(track_collection)
-		
 			this.setState({tracks_state:track_collection_dict})  
 
 			let playlist = await axios.get('/createPlaylist');
@@ -183,7 +174,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 								{this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
 								{this.state.artist_list && this.state.artist_list.map((item, index) =>
 										(
-										<div className="box artistComponent" key={index}>
+										<div className="box artistComponent" id="boxEffect" key={index}>
 												<div className="selectedArtist">
 												<p>{item.name}</p>
 												<button className="button XButton" onClick={() => this.removeArtist(index)}>X</button>
