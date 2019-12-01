@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
+
 .mainComponent {
     display: flex;
     text-align:center;
@@ -24,10 +26,18 @@ align-items: center;
 justify-content: center;
 align-items: center;
 font-size: 40px;
+font-family: 'Montserrat', sans-serif;
+font-weight: bold;
+color:#ffffff;
 }
+
+.menuInput {
+  align-self:center;
+  }
 
 .menuButtons {
 padding:10px;
+align-self:center;
 }
 
 .XButton {
@@ -36,18 +46,17 @@ padding:10px;
 
 .artistComponent {
 height:70px;
-width:180px;
 justify-content: center;
 align-items: center;
 margin:5px;
+padding:15px;
+display: inline-block;
 }
   
 .artistContainer{
-display:flex;
-flex-direction:row;
-flex-wrap: wrap;
 padding:30px;
 width:650px;
+height:400px;
 justify-content:center;
 }
 

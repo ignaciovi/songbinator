@@ -2,26 +2,44 @@
 
 .title{
     font-family: 'Montserrat', sans-serif;
-    color:#1db954;
+    color:#ffffff;
     font-weight: bold;
     font-size:60px;
 }
 
 .subtitle{
     font-family: 'Montserrat', sans-serif;
-    color:#1db954;
+    color:#ffffff;
     font-weight: bold;
     font-size:25px;
 }
 
-#monitor{
-    animation: monitorIn 1s ease-in-out forwards; /* assign animation to monitor with 'monitorIn' as keyframe name */
+#comeTop{
+    animation: comeTopAnimation 1s ease-in-out forwards; /* assign animation to monitor with 'monitorIn' as keyframe name */
     opacity: 0;
 }
 
-@keyframes monitorIn{
+#comeDown{
+    animation: comeDownAnimation 1s ease-in-out forwards; /* assign animation to monitor with 'monitorIn' as keyframe name */
+    animation-delay:1s;
+    opacity: 0;
+    padding-top:40px;
+}
+
+@keyframes comeTopAnimation{
     from{
         transform: translateY(-20px);
+        opacity: 0;
+    }
+    to{
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes comeDownAnimation{
+    from{
+        transform: translateY(20px);
         opacity: 0;
     }
     to{

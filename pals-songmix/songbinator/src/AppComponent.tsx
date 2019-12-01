@@ -1,6 +1,4 @@
 import * as React from 'react';
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import { TextField } from '@material-ui/core';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import './AppComponent.css';
@@ -40,36 +38,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		this.state = {artist:"", tracks_state: {tracks:[]},
 			loader:false, artist_list:[], suggested_artists:[]};
 
-		this.handleChange = this.handleChange.bind(this);
-		this.handleChangeAutocomplete = this.handleChangeAutocomplete.bind(this);
 		this.addArtist = this.addArtist.bind(this);
 		this.removeArtist = this.removeArtist.bind(this);
-	}
-
-	async handleChange(event:any) {
-		let fetched_suggested_artists:any = {suggested_artists:[]};
-		let fetched_suggested_artists_data:any[] = []
-		let artist_name_input:string = event.target.value
-	
-		fetched_suggested_artists = await axios.get('/getSuggestedArtists?name=' + artist_name_input); 
-		fetched_suggested_artists_data = fetched_suggested_artists.data.suggested_artists
-
-		this.setState({artist: artist_name_input});
-		this.setState({suggested_artists: fetched_suggested_artists_data});
-	}
-
-	async handleChangeNew(value:any) {
-		let fetched_suggested_artists:any = {suggested_artists:[]};
-		let fetched_suggested_artists_data:any[] = []
-		let artist_name_input:string = value
-	
-		this.setState({artist: artist_name_input});
-		this.setState({suggested_artists: fetched_suggested_artists_data});
-	}
-
-	async handleChangeAutocomplete(event:any) {
-		let artist_name_autocomplete:string = event.target.textContent
-		this.setState({artist: artist_name_autocomplete});
 	}
 	
 	addArtist(artist:string) {
@@ -85,12 +55,6 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		artist_list.splice(index,1)
 		this.setState({artist_list: artist_list})
 	}
-
-	onSuggestionsClearRequested = () => {
-		this.setState({
-			artist: ""
-		});
-	};
 
 	renderSuggestion = (suggestion:IArtist) => (
 		<div>
@@ -124,11 +88,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		});
 	};
 
-	onKeyDown = (event:any) => {
-		if (event.key === 'Enter') {
-      this.addArtist(this.state.artist)
-    }
-  };
+
 
 	async createPlaylist() {
 		let fetched_related_artists:any = {related_artists:[]};
@@ -192,13 +152,20 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		})
 
 		const playlistCreated = this.state.loader === false && this.state.tracks_state.tracks.length !== 0
+		const disabledAdd = isAddDisabled || isDuplicatedArtist || this.state.artist_list.length > 20;
+
+		const onKeyDown = (event:any) => {
+			if (event.key === 'Enter' && !disabledAdd) {
+				this.addArtist(this.state.artist)
+			}
+		};
 
 		const inputProps = {
 			placeholder: 'Type artist',
 			value:this.state.artist,
 			onChange: this.onChange,
-			onKeyDown: this.onKeyDown
-		  };
+			onKeyDown: onKeyDown
+			};
 
 		return (
 			<div>
@@ -207,16 +174,18 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 					{!this.state.loader && !playlistCreated ?
 					<div className="mainComponent">   
 						<div className="box inputBox">
-							<Autosuggest
-								suggestions={this.state.suggested_artists}
-								onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-								getSuggestionValue={option => option.name}
-								renderSuggestion={this.renderSuggestion}
-								onSuggestionSelected={this.onSuggestionSelected}
-								inputProps={inputProps}
-							/>
+							<div className="menuInput">
+								<Autosuggest
+									suggestions={this.state.suggested_artists}
+									onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+									getSuggestionValue={option => option.name}
+									renderSuggestion={this.renderSuggestion}
+									onSuggestionSelected={this.onSuggestionSelected}
+									inputProps={inputProps}
+								/>
+							</div>
 							<div className="menuButtons">
-								<button className="button" disabled={isAddDisabled || isDuplicatedArtist} 
+								<button className="button" disabled={disabledAdd} 
 										onClick={() => this.addArtist(this.state.artist)}>Add</button>
 								<button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
 							</div>
@@ -242,8 +211,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 									)
 								}
 						</div>
-					</div> : <p>Playlist created!</p>}
-				</div> : <p>Loading...</p>}
+					</div> : <p className="artistText">Playlist created!</p>}
+				</div> : <p className="artistText">Loading...</p>}
 			</div>
 			);
 		}
