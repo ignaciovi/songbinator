@@ -40,7 +40,8 @@ def getTracksResponse():
 
 @app.route('/createPlaylist')
 def playlist():
-   return createPlaylist()
+   content = request.args.get('name')
+   return createPlaylist(content)
 
 @app.route('/addTracks', methods =  ['POST'])
 def addTrack():

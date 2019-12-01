@@ -18,7 +18,7 @@ export default class App extends React.Component {
           : 
           <AppComponent />
         }   
-        {/* <GithubCorner href="https://github.com/ignaciovi" /> */}
+        <GithubCorner href="https://github.com/ignaciovi" />
       </div>
     );
   }

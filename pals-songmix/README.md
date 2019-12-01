@@ -27,13 +27,14 @@ S-19 One token login. Avoid multiple logins. Delete tokens when refreshing
 S-20 Delete input when adding the song
 S-21 On press ENTER -> add
 S-22 Style website
+S-23 Be able to change title playlist
 
 BACKLOG
 Style of displaying artist
 Contemplate rate limit for API
 Change tab icon and tab description
 Add image within artist
-Be able to change title playlist
+Consider special characters in playlist
 
 
 Be able to search for less popular similar artists

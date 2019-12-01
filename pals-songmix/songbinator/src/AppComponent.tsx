@@ -30,13 +30,14 @@ interface ITracks {
     loader:boolean
     artist_list:IArtist[]
 		suggested_artists:IArtist[]
+		playlistName:string
   };
 
 export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 	constructor(props:IDispatchProps) {
 		super(props);
 		this.state = {artist:"", tracks_state: {tracks:[]},
-			loader:false, artist_list:[], suggested_artists:[]};
+			loader:false, artist_list:[], suggested_artists:[], playlistName:""};
 
 		this.addArtist = this.addArtist.bind(this);
 		this.removeArtist = this.removeArtist.bind(this);
@@ -88,6 +89,10 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		});
 	};
 
+	onChangePlaylist = (event:any) => {
+    this.setState({playlistName: event.target.value});
+  }
+
 
 
 	async createPlaylist() {
@@ -122,7 +127,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 
 			this.setState({tracks_state:track_collection_dict})  
 
-			let playlist = await axios.get('/createPlaylist');
+			let playlist = await axios.get('/createPlaylist?name=' + this.state.playlistName);
 
 			const payload:IPayload = {tracks:this.state.tracks_state, 
 				playlist:playlist.data.playlist_id}
@@ -142,7 +147,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			if (item.name === this.state.artist && this.state.artist !== ""){
 				isAddDisabled = false
 		}})
-		let isGoDisabled:boolean = this.state.artist_list.length > 0 ? false : true
+		let isGoDisabled:boolean = this.state.artist_list.length === 0 || this.state.playlistName === "";
 		let isDuplicatedArtist:boolean = false
 		this.state.artist_list.map((item) =>
 		{
@@ -151,7 +156,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			}
 		})
 
-		const playlistCreated = this.state.loader === false && this.state.tracks_state.tracks.length !== 0
+		const playlistCreated = this.state.loader === false && this.state.tracks_state.tracks.length !== 0;
 		const disabledAdd = isAddDisabled || isDuplicatedArtist || this.state.artist_list.length > 20;
 
 		const onKeyDown = (event:any) => {
@@ -173,22 +178,25 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 				<div> 
 					{!this.state.loader && !playlistCreated ?
 					<div className="mainComponent">   
-						<div className="box inputBox">
-							<div className="menuInput">
-								<Autosuggest
-									suggestions={this.state.suggested_artists}
-									onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-									getSuggestionValue={option => option.name}
-									renderSuggestion={this.renderSuggestion}
-									onSuggestionSelected={this.onSuggestionSelected}
-									inputProps={inputProps}
-								/>
+						<div className="box mainBox">
+							<div className="inputBox">
+								<div className="menuInput">
+									<Autosuggest
+										suggestions={this.state.suggested_artists}
+										onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+										getSuggestionValue={option => option.name}
+										renderSuggestion={this.renderSuggestion}
+										onSuggestionSelected={this.onSuggestionSelected}
+										inputProps={inputProps}
+									/>
+								</div>
+								<div className="menuButtons">
+									<button className="button" disabled={disabledAdd} 
+											onClick={() => this.addArtist(this.state.artist)}>Add</button>
+									<button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
+								</div>
 							</div>
-							<div className="menuButtons">
-								<button className="button" disabled={disabledAdd} 
-										onClick={() => this.addArtist(this.state.artist)}>Add</button>
-								<button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
-							</div>
+							<input className="input" type="text" onChange={this.onChangePlaylist} value={this.state.playlistName} placeholder="Playlist name"></input>
 						</div>
 
 						{this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>

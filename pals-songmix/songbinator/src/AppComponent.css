@@ -8,7 +8,7 @@
 .inputBox {
     display: flex;
     text-align:center;
-    height:150px;
+    /* height:150px; */
 }
 
 .artistList {
@@ -20,6 +20,10 @@
 display: flex;
 justify-content: center;
 align-items: center;
+}
+
+.mainBox {
+  height: 150px;
 }
 
 .artistText {

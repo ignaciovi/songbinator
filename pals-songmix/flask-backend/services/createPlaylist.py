@@ -3,11 +3,11 @@ import requests
 import json
 
 
-def createPlaylist():
+def createPlaylist(playlist):
     access_token = request.cookies.get("spotify_token")
 
     payload=  {
-        "name": "New Playlist",
+        "name": playlist,
         "description": "Playlist created with Songbinator",
         "public": False
     }
