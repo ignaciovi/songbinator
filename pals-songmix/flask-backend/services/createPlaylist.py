@@ -1,7 +1,6 @@
 from flask import request
 import requests
 import json
-import flask
 
 
 def createPlaylist():
@@ -9,7 +8,7 @@ def createPlaylist():
 
     payload=  {
         "name": "New Playlist",
-        "description": "New playlist description",
+        "description": "Playlist created with Songbinator",
         "public": False
     }
 

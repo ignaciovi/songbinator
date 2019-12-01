@@ -1,8 +1,5 @@
 from flask import request
 import requests
-import json
-import flask
-
 
 def addTracksToPlaylist(tracks, playlist):
     access_token = request.cookies.get("spotify_token")

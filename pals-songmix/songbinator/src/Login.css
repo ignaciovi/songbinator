@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
+
+.title{
+    font-family: 'Montserrat', sans-serif;
+    color:#1db954;
+    font-weight: bold;
+    font-size:60px;
+}
+
+.subtitle{
+    font-family: 'Montserrat', sans-serif;
+    color:#1db954;
+    font-weight: bold;
+    font-size:25px;
+}
+
 #monitor{
     animation: monitorIn 1s ease-in-out forwards; /* assign animation to monitor with 'monitorIn' as keyframe name */
     opacity: 0;

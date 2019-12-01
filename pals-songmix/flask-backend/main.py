@@ -1,6 +1,6 @@
 from flask import Flask, request, make_response, render_template
 from services.getSimilarArtists import getSimilarArtists
-from services.getSongs import getSongs
+from services.getTracks import getTracks
 from services.getSuggestedArtists import getSuggestedArtists
 from services.createPlaylist import createPlaylist
 from services.addTracksToPlaylist import addTracksToPlaylist
@@ -34,9 +34,9 @@ def getSuggestedArtistsResponse():
    return getSuggestedArtists(content)
 
 @app.route('/getTracks', methods = ['GET'])
-def getSongsResponse():
+def getTracksResponse():
    content = request.args.get('name')
-   return getSongs(content)
+   return getTracks(content)
 
 @app.route('/createPlaylist')
 def playlist():

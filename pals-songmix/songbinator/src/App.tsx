@@ -4,6 +4,7 @@ import './App.css';
 import 'bulma/css/bulma.css'
 import { Login } from './Login';
 import { AppComponent } from './AppComponent';
+import GithubCorner from 'react-github-corner';
 
 export default class App extends React.Component {
 
@@ -17,6 +18,7 @@ export default class App extends React.Component {
           : 
           <AppComponent />
         }   
+        <GithubCorner href="https://github.com/ignaciovi/repo" />
       </div>
     );
   }

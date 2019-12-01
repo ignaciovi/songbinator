@@ -2,6 +2,7 @@ import * as React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { TextField } from '@material-ui/core';
 import axios from 'axios';
+import Autosuggest from 'react-autosuggest';
 import './AppComponent.css';
 
 interface ITracks {
@@ -56,7 +57,16 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		this.setState({artist: artist_name_input});
 		this.setState({suggested_artists: fetched_suggested_artists_data});
 	}
+
+	async handleChangeNew(value:any) {
+		let fetched_suggested_artists:any = {suggested_artists:[]};
+		let fetched_suggested_artists_data:any[] = []
+		let artist_name_input:string = value
 	
+		this.setState({artist: artist_name_input});
+		this.setState({suggested_artists: fetched_suggested_artists_data});
+	}
+
 	async handleChangeAutocomplete(event:any) {
 		let artist_name_autocomplete:string = event.target.textContent
 		this.setState({artist: artist_name_autocomplete});
@@ -67,6 +77,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		artist_list = artist_list.concat({name:artist})  
 		this.setState({artist_list: artist_list})
 		this.setState({artist:""})
+		this.setState({suggested_artists:[]})
 	}
 
 	removeArtist(index:number) {
@@ -74,7 +85,46 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		artist_list.splice(index,1)
 		this.setState({artist_list: artist_list})
 	}
+
+	onSuggestionsClearRequested = () => {
+		this.setState({
+			artist: ""
+		});
+	};
+
+	renderSuggestion = (suggestion:IArtist) => (
+		<div>
+			{suggestion.name}
+		</div>
+	);
+
+	onChange = (event:any) => {
+		this.setState({
+			artist: event.target.value
+		});
+	};
+
+	async getSuggestions(artist:any) {
+		let fetched_suggested_artists:any = {suggested_artists:[]};
+		let fetched_suggested_artists_data:any[] = []
 	
+		fetched_suggested_artists = await axios.get('/getSuggestedArtists?name=' + artist.value); 
+		fetched_suggested_artists_data = fetched_suggested_artists.data.suggested_artists
+
+		this.setState({suggested_artists: fetched_suggested_artists_data});
+	}
+
+	onSuggestionsFetchRequested = (value:any) => {
+		this.getSuggestions(value)
+	};
+
+	onSuggestionSelected = (value:any) => {
+		this.setState({
+			artist: value.target.innerText
+		});
+	};
+	
+
 	async createPlaylist() {
 		let fetched_related_artists:any = {related_artists:[]};
 		let fetched_tracks:any = {tracks:[]};
@@ -138,6 +188,12 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 
 		const playlistCreated = this.state.loader === false && this.state.tracks_state.tracks.length !== 0
 
+		const inputProps = {
+			placeholder: 'Type artist',
+			value:this.state.artist,
+			onChange: this.onChange
+		  };
+
 		return (
 			<div>
 				{!this.state.loader ?
@@ -145,15 +201,13 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 					{!this.state.loader && !playlistCreated ?
 					<div className="mainComponent">   
 						<div className="box inputBox">
-							<Autocomplete
-							freeSolo
-							options={this.state.suggested_artists}
-							getOptionLabel={option => option.name}
-							onChange={this.handleChangeAutocomplete}
-							renderInput={params => (
-							<TextField {...params} label="Artist Name" variant="outlined" fullWidth value={this.state.artist}
-							onChange={this.handleChange} />
-									)}
+							<Autosuggest
+								suggestions={this.state.suggested_artists}
+								onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+								getSuggestionValue={option => option.name}
+								renderSuggestion={this.renderSuggestion}
+								onSuggestionSelected={this.onSuggestionSelected}
+								inputProps={inputProps}
 							/>
 							<div className="menuButtons">
 								<button className="button" disabled={isAddDisabled || isDuplicatedArtist} 
@@ -169,7 +223,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 						}
 
 						<div className="artistContainer">
-								{this.state.artist_list.length === 0 && <div className="artistText"> Insert artist </div>}
+								{this.state.artist_list.length === 0 && <div className="artistText"> Type artist </div>}
 								{this.state.artist_list && this.state.artist_list.map((item, index) =>
 										(
 										<div className="box artistComponent" id="boxEffect" key={index}>

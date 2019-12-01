@@ -8,4 +8,6 @@
   justify-content: center;
   align-items: center;
   /* margin-top:300px; */
+  background: 	#F8F8F8
+  /* background: radial-gradient(circle, rgba(0,0,0,1) 27%, rgba(29,185,84,1) 84%); */
 }

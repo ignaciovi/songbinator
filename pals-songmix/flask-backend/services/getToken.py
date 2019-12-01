@@ -11,10 +11,8 @@ def getToken(code):
 		"client_secret":"45f9260cb0174d4aa27d58738e0e3791",
 	}
 
-	print("DO I GET HERE")
-
-	post_request = requests.post("https://accounts.spotify.com/api/token", data=code_payload)
-	response_data = json.loads(post_request.text)
+	token_request = requests.post("https://accounts.spotify.com/api/token", data=code_payload)
+	response_data = json.loads(token_request.text)
 	access_token = response_data["access_token"]
 
 	return access_token

@@ -9,11 +9,16 @@ export class Login extends React.Component {
 
   render() {
     return (
-        <div> 
-          {/* Green button and using bulma */}
-            <button className="button" id="monitor" onClick={() => this.redirect()}>
+        <div id="monitor"> 
+            <h1 className="title">Songbinator</h1>
+            <h2 className="subtitle">Problems finding a playlist that satisfies the musical taste of you an all your friends?
+              <br />Give us some artists and we will create you a personalised playlist that everyone will like!
+            </h2>
+            <button className="button is-success" onClick={() => this.redirect()}>
                 Login
             </button>
+            <br /><br />
+            <h2 className="subtitle">Login with your Spotify account</h2>
         </div>
     );
   }
