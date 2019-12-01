@@ -25,13 +25,13 @@ S-17 Playlist size algorithm
 S-18 Remove hardcoded user and animation effects added
 S-19 One token login. Avoid multiple logins. Delete tokens when refreshing
 S-20 Delete input when adding the song
+S-21 On press ENTER -> add
 
 BACKLOG
 Style of displaying artist
 Style website
 Contemplate rate limit for API
 Change tab icon and tab description
-On press ENTER -> add
 Add image within artist
 Be able to change title playlist
 

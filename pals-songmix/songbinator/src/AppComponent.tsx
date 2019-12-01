@@ -123,7 +123,12 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			artist: value.target.innerText
 		});
 	};
-	
+
+	onKeyDown = (event:any) => {
+		if (event.key === 'Enter') {
+      this.addArtist(this.state.artist)
+    }
+  };
 
 	async createPlaylist() {
 		let fetched_related_artists:any = {related_artists:[]};
@@ -191,7 +196,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		const inputProps = {
 			placeholder: 'Type artist',
 			value:this.state.artist,
-			onChange: this.onChange
+			onChange: this.onChange,
+			onKeyDown: this.onKeyDown
 		  };
 
 		return (
