@@ -28,12 +28,11 @@ S-20 Delete input when adding the song
 S-21 On press ENTER -> add
 S-22 Style website
 S-23 Be able to change title playlist
+S-24 Change tab icon and tab description
 
 BACKLOG
-Style of displaying artist
 Contemplate rate limit for API
-Change tab icon and tab description
-Add image within artist
+Add image within artist in suggestions and in the selected ones
 Consider special characters in playlist
 
 
