@@ -146,7 +146,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		{
 			if (item.name === this.state.artist && this.state.artist !== ""){
 				isAddDisabled = false
-		}})
+			}
+		})
 		let isGoDisabled:boolean = this.state.artist_list.length === 0 || this.state.playlistName === "";
 		let isDuplicatedArtist:boolean = false
 		this.state.artist_list.map((item) =>
