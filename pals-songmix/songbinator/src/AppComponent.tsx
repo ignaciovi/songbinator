@@ -29,15 +29,17 @@ interface ITracks {
     tracks_state:ITracks
     loader:boolean
     artist_list:IArtist[]
-		suggested_artists:IArtist[]
-		playlistName:string
+	suggested_artists:IArtist[]
+	playlistName:string
+	progress:number
   };
 
 export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 	constructor(props:IDispatchProps) {
 		super(props);
 		this.state = {artist:"", tracks_state: {tracks:[]},
-			loader:false, artist_list:[], suggested_artists:[], playlistName:""};
+			loader:false, artist_list:[], suggested_artists:[], playlistName:"",
+			progress:0};
 
 		this.addArtist = this.addArtist.bind(this);
 		this.removeArtist = this.removeArtist.bind(this);
@@ -87,6 +89,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		this.setState({
 			artist: value.target.innerText
 		});
+		this.addArtist(value.target.innerText)
 	};
 
 	onChangePlaylist = (event:any) => {
@@ -115,10 +118,15 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 				}
 				return unique;
 			},[]);
-
+			
+			// Unable to perform .forEach with async calls. Also .entries() doesnt work in TS
+			let index = 0
 			for (let related_artist of related_artists_filter_dup) {
 				fetched_tracks = await axios.get('/getTracks?name=' + related_artist.name);
-				track_collection = track_collection.concat(fetched_tracks.data.tracks)  
+				let progress = Math.floor(index / related_artists_filter_dup.length * 100 * 0.9);
+				index += 1;
+				this.setState({progress:progress});
+				track_collection = track_collection.concat(fetched_tracks.data.tracks);
 			}
 
 			if (track_collection) {
@@ -197,7 +205,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 									<button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
 								</div>
 							</div>
-							<input className="input" type="text" onChange={this.onChangePlaylist} value={this.state.playlistName} placeholder="Playlist name"></input>
+							{this.state.artist_list.length > 0 && <input className="input" type="text" onChange={this.onChangePlaylist} value={this.state.playlistName} placeholder="Playlist name"></input>}
 						</div>
 
 						{this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
@@ -220,8 +228,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 									)
 								}
 						</div>
-					</div> : <p className="artistText">Playlist created!</p>}
-				</div> : <p className="artistText">Loading...</p>}
+					</div> : <h2 className="subtitle"> Playlist created! Search for "{this.state.playlistName}" in your Spotify App. <br />Thank you!</h2>}
+        		</div> : <h2 className="subtitle">Loading... {this.state.progress}%</h2>}
 			</div>
 			);
 		}

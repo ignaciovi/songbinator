@@ -1,6 +1,5 @@
 from flask import Flask, request
 from flask import render_template
-import spotipy.oauth2 as oauth2
 import requests
 
 def getSuggestedArtists(artist_name):

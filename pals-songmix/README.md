@@ -3,6 +3,8 @@
 In flask-backend run "python file_name.py"
 In songbinator run "npm start"
 "npm run build" to build the front end and move it to static and template folders in flask
+Change favicon.ico source
+ibmcloud cf push fron flask-backend file
 
 DONE
 S-1 Given an artist, get top tracks
@@ -29,17 +31,25 @@ S-21 On press ENTER -> add
 S-22 Style website
 S-23 Be able to change title playlist
 S-24 Change tab icon and tab description
+S-25 Small changes
+S-26 Go live, autoselect in dropdown, permissions change
 
 BACKLOG
 Contemplate rate limit for API
 Add image within artist in suggestions and in the selected ones
 Consider special characters in playlist
+Filter by date release
+Option to delete suggested artists
+When select in dropdown add to playlist
+Preview of song 30 seconds artist suggested
+Check permissions required to user (read activity delete)
+Change to camelcase states
 
-
+Simple and advance options
 Be able to search for less popular similar artists
 Be able to take not only top tracks but random tracks
 Show stats of the playlist created. Is % happy and energetic...
-Option to filter in two different playlist
+Option to filter in two different playlist by mood of songs
 
 
 

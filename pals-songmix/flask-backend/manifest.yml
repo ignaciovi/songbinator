@@ -1,0 +1,6 @@
+  applications:
+  - name: Songbinator
+    memory: 128M
+    buildpacks:
+      - https://github.com/cloudfoundry/python-buildpack.git
+    command: python main.py

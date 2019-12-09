@@ -6,14 +6,13 @@ from services.createPlaylist import createPlaylist
 from services.addTracksToPlaylist import addTracksToPlaylist
 from services.getToken import getToken
 import webbrowser
-import spotipy
 import json
 import requests
-import spotipy.util as util
-from spotipy import oauth2
 import flask
+import os
 
 app = Flask("__main__")
+port = int(os.getenv('PORT', 8000))
 
 @app.route('/')
 def main():
@@ -52,9 +51,10 @@ def successLoginDone():
    code = request.args['code']
    response = make_response(render_template('index.html'))
    response.set_cookie("spotify_code", code)
-   access_token = getToken(code)
+   access_token = getToken(code, request.base_url)
    response.set_cookie("spotify_token", access_token)
    return response
 
 if __name__ == '__main__':
-    app.run(debug=True)
+   # app.run(debug=True)
+   app.run(host='0.0.0.0', port=port, debug=True)
