@@ -41,16 +41,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			loader:false, artist_list:[], suggested_artists:[], playlistName:"",
 			progress:0};
 
-		this.addArtist = this.addArtist.bind(this);
+		// this.addArtist = this.addArtist.bind(this);
 		this.removeArtist = this.removeArtist.bind(this);
-	}
-	
-	addArtist(artist:string) {
-		let artist_list:IArtist[] = this.state.artist_list
-		artist_list = artist_list.concat({name:artist})  
-		this.setState({artist_list: artist_list})
-		this.setState({artist:""})
-		this.setState({suggested_artists:[]})
 	}
 
 	removeArtist(index:number) {
@@ -85,18 +77,9 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		this.getSuggestions(value)
 	};
 
-	onSuggestionSelected = (value:any) => {
-		this.setState({
-			artist: value.target.innerText
-		});
-		this.addArtist(value.target.innerText)
-	};
-
 	onChangePlaylist = (event:any) => {
     this.setState({playlistName: event.target.value});
   }
-
-
 
 	async createPlaylist() {
 		let fetched_related_artists:any = {related_artists:[]};
@@ -149,29 +132,63 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		}
 
 	render() {
-		let isAddDisabled:boolean = true
-		this.state.suggested_artists && this.state.suggested_artists.map((item) =>
-		{
-			if (item.name === this.state.artist && this.state.artist !== ""){
-				isAddDisabled = false
-			}
-		})
-		let isGoDisabled:boolean = this.state.artist_list.length === 0 || this.state.playlistName === "";
-		let isDuplicatedArtist:boolean = false
-		this.state.artist_list.map((item) =>
-		{
-			if (item.name === this.state.artist){
-				isDuplicatedArtist = true
-			}
-		})
 
+		const getIsAddDisabled = () => {
+			let isArtistInSuggested:boolean = false
+			this.state.suggested_artists.forEach((item) =>
+			{
+				if (item.name === this.state.artist){
+					isArtistInSuggested = true;
+				}
+			})
+
+			let isDuplicatedArtist:boolean = false;
+			this.state.artist_list.forEach((item) =>
+			{
+				if (item.name === this.state.artist){
+					isDuplicatedArtist = true;
+				}
+			})
+
+			const disabledAdd = !isArtistInSuggested || isDuplicatedArtist || this.state.artist_list.length > 15;
+			console.log("AAAAAAAAAAAAAA")
+			console.log(isArtistInSuggested)
+			console.log(isDuplicatedArtist)
+			console.log(disabledAdd)
+			console.log(this.state.suggested_artists)
+			console.log(this.state.artist)
+
+			return disabledAdd
+		}
+		
+		const disabledAdd = getIsAddDisabled()
+
+		const addArtist = (artist:string) => {
+			let artist_list:IArtist[] = this.state.artist_list
+			const mustInclude = (artist_list.find(o => o.name === artist)) === undefined || artist_list.length === 0;
+			if (mustInclude) {
+				artist_list = artist_list.concat({name:artist})  
+				this.setState({artist_list: artist_list})
+			}
+			this.setState({artist:""})
+			this.setState({suggested_artists:[]})
+		}
+	
+		let isGoDisabled:boolean = this.state.artist_list.length === 0 || this.state.playlistName === "";
 		const playlistCreated = this.state.loader === false && this.state.tracks_state.tracks.length !== 0;
-		const disabledAdd = isAddDisabled || isDuplicatedArtist || this.state.artist_list.length > 20;
 
 		const onKeyDown = (event:any) => {
 			if (event.key === 'Enter' && !disabledAdd) {
-				this.addArtist(this.state.artist)
+				addArtist(this.state.artist)
 			}
+		};
+
+		const onSuggestionSelected = (value:any) => {		
+			this.setState({
+				artist: value.target.innerText
+			});
+
+			addArtist(value.target.innerText)
 		};
 
 		const inputProps = {
@@ -195,13 +212,13 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 										onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
 										getSuggestionValue={option => option.name}
 										renderSuggestion={this.renderSuggestion}
-										onSuggestionSelected={this.onSuggestionSelected}
+										onSuggestionSelected={onSuggestionSelected}
 										inputProps={inputProps}
 									/>
 								</div>
 								<div className="menuButtons">
 									<button className="button" disabled={disabledAdd} 
-											onClick={() => this.addArtist(this.state.artist)}>Add</button>
+											onClick={() => addArtist(this.state.artist)}>Add</button>
 									<button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
 								</div>
 							</div>

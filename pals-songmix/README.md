@@ -4,6 +4,8 @@ In flask-backend run "python file_name.py"
 In songbinator run "npm start"
 "npm run build" to build the front end and move it to static and template folders in flask
 Change favicon.ico source
+ibmcloud login
+ibmcloud target --cf
 ibmcloud cf push fron flask-backend file
 
 DONE
@@ -33,6 +35,7 @@ S-23 Be able to change title playlist
 S-24 Change tab icon and tab description
 S-25 Small changes
 S-26 Go live, autoselect in dropdown, permissions change
+S-27 Small update
 
 BACKLOG
 Contemplate rate limit for API
@@ -44,6 +47,15 @@ When select in dropdown add to playlist
 Preview of song 30 seconds artist suggested
 Check permissions required to user (read activity delete)
 Change to camelcase states
+Change repository name to songbinator
+Optimise for phone
+Take first item of array in a more elegant way
+Make repository public without client secret
+View web stats
+Linkedin publication
+Depending on location of user check artists blocked by country
+Not secure songbinator in web browser. How to make it secure
+Direct link to spotify browser when playlist is created
 
 Simple and advance options
 Be able to search for less popular similar artists
