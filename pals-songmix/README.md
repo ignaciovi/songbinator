@@ -36,6 +36,7 @@ S-24 Change tab icon and tab description
 S-25 Small changes
 S-26 Go live, autoselect in dropdown, permissions change
 S-27 Small update
+S-28 Add google analytics
 
 BACKLOG
 Contemplate rate limit for API
@@ -56,6 +57,8 @@ Linkedin publication
 Depending on location of user check artists blocked by country
 Not secure songbinator in web browser. How to make it secure
 Direct link to spotify browser when playlist is created
+Add copyright creator of background
+Add it to producthunt
 
 Simple and advance options
 Be able to search for less popular similar artists
