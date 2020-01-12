@@ -39,6 +39,7 @@ S-26 Go live, autoselect in dropdown, permissions change
 S-27 Small update
 S-28 Add google analytics
 S-29 Fix state naming convention
+S-30 Change repository name to songbinator
 
 BACKLOG
 Contemplate rate limit for API
@@ -46,17 +47,16 @@ Add image within artist in suggestions and in the selected ones
 Filter by date release
 Option to delete suggested artists
 Preview of song 30 seconds artist suggested
-Change repository name to songbinator
 Optimise for phone
 Take first item of array in a more elegant way
 Make repository public without client secret
-Linkedin publication
 Depending on location of user check artists blocked by country
 Direct link to spotify browser when playlist is created
 Add copyright creator of background
+Linkedin publication
 Add it to producthunt
 
-Simple and advance options
+Simple and advance options (tab):
 Be able to search for less popular similar artists
 Be able to take not only top tracks but random tracks
 Show stats of the playlist created. Is % happy and energetic...
