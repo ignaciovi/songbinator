@@ -26,10 +26,10 @@ interface ITracks {
   
   interface IStateProps { 
     artist:string 
-    tracks_state:ITracks
+    tracksState:ITracks
     loader:boolean
-    artist_list:IArtist[]
-	suggested_artists:IArtist[]
+    artistList:IArtist[]
+	suggestedArtists:IArtist[]
 	playlistName:string
 	progress:number
   };
@@ -37,8 +37,8 @@ interface ITracks {
 export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 	constructor(props:IDispatchProps) {
 		super(props);
-		this.state = {artist:"", tracks_state: {tracks:[]},
-			loader:false, artist_list:[], suggested_artists:[], playlistName:"",
+		this.state = {artist:"", tracksState: {tracks:[]},
+			loader:false, artistList:[], suggestedArtists:[], playlistName:"",
 			progress:0};
 
 		// this.addArtist = this.addArtist.bind(this);
@@ -46,9 +46,9 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 	}
 
 	removeArtist(index:number) {
-		let artist_list:IArtist[] = this.state.artist_list
-		artist_list.splice(index,1)
-		this.setState({artist_list: artist_list})
+		let artistList:IArtist[] = this.state.artistList
+		artistList.splice(index,1)
+		this.setState({artistList: artistList})
 	}
 
 	renderSuggestion = (suggestion:IArtist) => (
@@ -64,13 +64,13 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 	};
 
 	async getSuggestions(artist:any) {
-		let fetched_suggested_artists:any = {suggested_artists:[]};
-		let fetched_suggested_artists_data:any[] = []
+		let fetched_suggestedArtists:any = {suggestedArtists:[]};
+		let fetched_suggestedArtists_data:any[] = []
 	
-		fetched_suggested_artists = await axios.get('/getSuggestedArtists?name=' + artist.value); 
-		fetched_suggested_artists_data = fetched_suggested_artists.data.suggested_artists
+		fetched_suggestedArtists = await axios.get('/getSuggestedArtists?name=' + artist.value); 
+		fetched_suggestedArtists_data = fetched_suggestedArtists.data.suggestedArtists
 
-		this.setState({suggested_artists: fetched_suggested_artists_data});
+		this.setState({suggestedArtists: fetched_suggestedArtists_data});
 	}
 
 	onSuggestionsFetchRequested = (value:any) => {
@@ -90,8 +90,8 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		this.setState({loader:true})  
 	
 		try {
-			for (let input_artist of this.state.artist_list) {
-				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artist_list.length);    
+			for (let input_artist of this.state.artistList) {
+				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artistList.length);    
 				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
 			}
 
@@ -116,11 +116,11 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 				track_collection_dict.tracks = track_collection
 			}
 
-			this.setState({tracks_state:track_collection_dict})  
+			this.setState({tracksState:track_collection_dict})  
 
 			let playlist = await axios.get('/createPlaylist?name=' + this.state.playlistName);
 
-			const payload:IPayload = {tracks:this.state.tracks_state, 
+			const payload:IPayload = {tracks:this.state.tracksState, 
 				playlist:playlist.data.playlist_id}
 
 			await axios.post('/addTracks', payload)
@@ -135,7 +135,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 
 		const getIsAddDisabled = () => {
 			let isArtistInSuggested:boolean = false
-			this.state.suggested_artists.forEach((item) =>
+			this.state.suggestedArtists.forEach((item) =>
 			{
 				if (item.name === this.state.artist){
 					isArtistInSuggested = true;
@@ -143,20 +143,14 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			})
 
 			let isDuplicatedArtist:boolean = false;
-			this.state.artist_list.forEach((item) =>
+			this.state.artistList.forEach((item) =>
 			{
 				if (item.name === this.state.artist){
 					isDuplicatedArtist = true;
 				}
 			})
 
-			const disabledAdd = !isArtistInSuggested || isDuplicatedArtist || this.state.artist_list.length > 15;
-			console.log("AAAAAAAAAAAAAA")
-			console.log(isArtistInSuggested)
-			console.log(isDuplicatedArtist)
-			console.log(disabledAdd)
-			console.log(this.state.suggested_artists)
-			console.log(this.state.artist)
+			const disabledAdd = !isArtistInSuggested || isDuplicatedArtist || this.state.artistList.length > 15;
 
 			return disabledAdd
 		}
@@ -164,18 +158,18 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 		const disabledAdd = getIsAddDisabled()
 
 		const addArtist = (artist:string) => {
-			let artist_list:IArtist[] = this.state.artist_list
-			const mustInclude = (artist_list.find(o => o.name === artist)) === undefined || artist_list.length === 0;
+			let artistList:IArtist[] = this.state.artistList
+			const mustInclude = (artistList.find(o => o.name === artist)) === undefined || artistList.length === 0;
 			if (mustInclude) {
-				artist_list = artist_list.concat({name:artist})  
-				this.setState({artist_list: artist_list})
+				artistList = artistList.concat({name:artist})  
+				this.setState({artistList: artistList})
 			}
 			this.setState({artist:""})
-			this.setState({suggested_artists:[]})
+			this.setState({suggestedArtists:[]})
 		}
 	
-		let isGoDisabled:boolean = this.state.artist_list.length === 0 || this.state.playlistName === "";
-		const playlistCreated = this.state.loader === false && this.state.tracks_state.tracks.length !== 0;
+		let isGoDisabled:boolean = this.state.artistList.length === 0 || this.state.playlistName === "";
+		const playlistCreated = this.state.loader === false && this.state.tracksState.tracks.length !== 0;
 
 		const onKeyDown = (event:any) => {
 			if (event.key === 'Enter' && !disabledAdd) {
@@ -208,7 +202,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 							<div className="inputBox">
 								<div className="menuInput">
 									<Autosuggest
-										suggestions={this.state.suggested_artists}
+										suggestions={this.state.suggestedArtists}
 										onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
 										getSuggestionValue={option => option.name}
 										renderSuggestion={this.renderSuggestion}
@@ -222,18 +216,18 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 									<button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
 								</div>
 							</div>
-							{this.state.artist_list.length > 0 && <input className="input" type="text" onChange={this.onChangePlaylist} value={this.state.playlistName} placeholder="Playlist name"></input>}
+							{this.state.artistList.length > 0 && <input className="input" type="text" onChange={this.onChangePlaylist} value={this.state.playlistName} placeholder="Playlist name"></input>}
 						</div>
 
-						{this.state.tracks_state.tracks && this.state.tracks_state.tracks.map((item) =>
+						{this.state.tracksState.tracks && this.state.tracksState.tracks.map((item) =>
 								(
 								<p>{item.track_name}</p>
 								))
 						}
 
 						<div className="artistContainer">
-								{this.state.artist_list.length === 0 && <div className="artistText"> Type artist </div>}
-								{this.state.artist_list && this.state.artist_list.map((item, index) =>
+								{this.state.artistList.length === 0 && <div className="artistText"> Type artist </div>}
+								{this.state.artistList && this.state.artistList.map((item, index) =>
 										(
 										<div className="box artistComponent" id="boxEffect" key={index}>
 												<div className="selectedArtist">

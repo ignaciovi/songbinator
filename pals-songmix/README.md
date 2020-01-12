@@ -38,15 +38,14 @@ S-25 Small changes
 S-26 Go live, autoselect in dropdown, permissions change
 S-27 Small update
 S-28 Add google analytics
+S-29 Fix state naming convention
 
 BACKLOG
 Contemplate rate limit for API
 Add image within artist in suggestions and in the selected ones
-Consider special characters in playlist
 Filter by date release
 Option to delete suggested artists
 Preview of song 30 seconds artist suggested
-Change to camelcase states
 Change repository name to songbinator
 Optimise for phone
 Take first item of array in a more elegant way

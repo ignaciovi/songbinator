@@ -12,7 +12,7 @@ def getSuggestedArtists(artist_name):
 
     if spotify_id_request:
         suggested_artists = [{"name": artist["name"]} for artist in spotify_id_request["artists"]["items"]]
-        suggested_artists_json = {"suggested_artists": suggested_artists}
+        suggested_artists_json = {"suggestedArtists": suggested_artists}
 
 
 
