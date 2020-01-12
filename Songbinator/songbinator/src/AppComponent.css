@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
+
+.mainComponent {
+    text-align:center;
+}
+
+.inputBox {
+    text-align:center;
+    height: min-content;
+    width: min-content;
+}
+
+.menuInput {
+  align-self:center;
+}
+
+.menuButtons {
+  padding:10px;
+  align-self:center;
+}
+
+.artistContainer{
+  width:500px;
+  height:400px;
+  justify-content:center;
+}
+
+.artistText {
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  color:#ffffff;
+}
+
+.artistComponent {
+height:70px;
+justify-content: center;
+align-items: center;
+margin:5px;
+padding:15px;
+display: inline-block;
+}
+
+.selectedArtist {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.XButton {
+  margin-left:10px;
+}
+
+#boxEffect {
+    animation: createBox .25s;
+}
+
+@keyframes createBox {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+.react-autosuggest__container {
+position: relative;
+}
+
+.react-autosuggest__input {
+width: 240px;
+height: 50px;
+padding: 10px 20px;
+font-family: Helvetica, sans-serif;
+font-weight: 300;
+font-size: 16px;
+border: 1px solid #aaa;
+border-radius: 4px;
+}
+
+.react-autosuggest__input--focused {
+outline: none;
+}
+
+.react-autosuggest__input--open {
+border-bottom-left-radius: 0;
+border-bottom-right-radius: 0;
+}
+
+.react-autosuggest__suggestions-container {
+display: none;
+}
+
+.react-autosuggest__suggestions-container--open {
+display: block;
+position: absolute;
+top: 51px;
+width: 240px;
+border: 1px solid #aaa;
+background-color: #fff;
+font-family: Helvetica, sans-serif;
+font-weight: 300;
+font-size: 16px;
+border-bottom-left-radius: 4px;
+border-bottom-right-radius: 4px;
+z-index: 2;
+}
+
+.react-autosuggest__suggestions-list {
+margin: 0;
+padding: 0;
+list-style-type: none;
+}
+
+.react-autosuggest__suggestion {
+cursor: pointer;
+padding: 10px 20px;
+}
+
+.react-autosuggest__suggestion--highlighted {
+background-color: #ddd;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+  .mainBox {
+    /* max-height: 200px; */
+    height: min-content;
+    width: min-content;
+    margin: 0 100px;
+  }
+  .input {
+    width:240px;
+  }
+  .artistComponent {
+    height:50px;
+    margin-bottom: 0.75rem;
+  }
+  .selectedArtist {
+    font-size: 10px;
+  }
+  .XButton {
+    height: 25px;
+    margin-left: 5px;
+    padding: 0 5px;
+  }
+  .mainComponent {
+    margin-top:200px;
+  }
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+  .inputBox {
+    display: flex;
+  }
+  .mainBox {
+    /* max-height: 150px; */
+    height: min-content;
+    width: min-content;
+  }
+  .mainComponent {
+  display: flex;
+  }
+  .artistContainer {
+    padding:30px;
+  }
+}
