@@ -1,5 +1,6 @@
 import * as React from 'react';
 import './Login.css';
+import ReactGA from 'react-ga';
 
 export class Login extends React.Component {
   redirect() {
@@ -9,6 +10,8 @@ export class Login extends React.Component {
   }
 
   render() {
+    ReactGA.initialize('G-T08XVM656Z');
+    ReactGA.pageview('/');
     return (
         <div> 
           <div id="comeTop">

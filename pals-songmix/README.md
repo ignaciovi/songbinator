@@ -4,9 +4,10 @@ In flask-backend run "python file_name.py"
 In songbinator run "npm start"
 "npm run build" to build the front end and move it to static and template folders in flask
 Change favicon.ico source
+Just run the python script that does what is needed and also change manifest location taking out the static
 ibmcloud login
 ibmcloud target --cf
-ibmcloud cf push fron flask-backend file
+ibmcloud cf push from flask-backend file
 
 DONE
 S-1 Given an artist, get top tracks
@@ -44,18 +45,14 @@ Add image within artist in suggestions and in the selected ones
 Consider special characters in playlist
 Filter by date release
 Option to delete suggested artists
-When select in dropdown add to playlist
 Preview of song 30 seconds artist suggested
-Check permissions required to user (read activity delete)
 Change to camelcase states
 Change repository name to songbinator
 Optimise for phone
 Take first item of array in a more elegant way
 Make repository public without client secret
-View web stats
 Linkedin publication
 Depending on location of user check artists blocked by country
-Not secure songbinator in web browser. How to make it secure
 Direct link to spotify browser when playlist is created
 Add copyright creator of background
 Add it to producthunt
