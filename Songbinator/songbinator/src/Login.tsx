@@ -4,7 +4,7 @@ import ReactGA from 'react-ga';
 
 export class Login extends React.Component {
   redirect() {
-    const redirect_url = ["https://accounts.spotify.com/authorize?client_id=b9147e7fb3954d24a264480d4a63700d&redirect_uri=", 
+    const redirect_url = ["https://accounts.spotify.com/authorize?client_id=YOUR_CLIENT_ID&redirect_uri=", 
                           window.location.href, "successLoginDone&scope=playlist-modify-public playlist-modify-private&response_type=code"]
     window.location.href = redirect_url.join("")
   }
@@ -16,7 +16,7 @@ export class Login extends React.Component {
         <div> 
           <div id="comeTop">
             <h1 className="title">Songbinator</h1>
-            <h2 className="subtitle">Problem finding a playlist that satisfies the musical taste of you and all your friends?
+            <h2 className="subtitle">Problem finding a playlist that satisfies the musical taste of you and your group of friends?
               <br />Give us some artists and we will create you a personalised playlist that everyone will like!
             </h2>
           </div>

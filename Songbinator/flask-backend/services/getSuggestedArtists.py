@@ -14,6 +14,4 @@ def getSuggestedArtists(artist_name):
         suggested_artists = [{"name": artist["name"]} for artist in spotify_id_request["artists"]["items"]]
         suggested_artists_json = {"suggestedArtists": suggested_artists}
 
-
-
     return suggested_artists_json

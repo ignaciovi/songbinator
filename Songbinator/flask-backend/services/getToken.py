@@ -7,8 +7,8 @@ def getToken(code, base_url):
 		"grant_type": "authorization_code",
 		"code": str(code),
 		"redirect_uri": base_url,
-		"client_id":"b9147e7fb3954d24a264480d4a63700d",
-		"client_secret":"45f9260cb0174d4aa27d58738e0e3791",
+		"client_id":"YOUR_CLIENT_ID",
+		"client_secret":"YOUR_CLIENT_SECRET",
 	}
 
 	token_request = requests.post("https://accounts.spotify.com/api/token", data=code_payload)
