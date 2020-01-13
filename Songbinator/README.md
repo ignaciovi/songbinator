@@ -1,15 +1,24 @@
-# Structure
+# Songbinator
 
-In flask-backend run "python file_name.py"
-In songbinator run "npm start"
-"npm run build" to build the front end and move it to static and template folders in flask
-Change favicon.ico source
-Just run the python script that does what is needed and also change manifest location taking out the static
-ibmcloud login
-ibmcloud target --cf
-ibmcloud cf push from flask-backend file
+Problem finding a playlist that satisfies the musical taste of you and your group of friends?
+Give us some artists and we will create you a personalised playlist that everyone will like!
 
-DONE
+http://songbinator.eu-gb.mybluemix.net/
+
+# Pending stories
+
+Add image within artist in suggestions and in selected ones
+Filter suggested artists by date of release
+Option to delete suggested artists
+Preview of song 30 seconds artist suggested
+Optimise for phone
+Check artists blocked by country depending on location of user 
+Search for less popular similar artists
+Take not only top tracks but random tracks if required
+Show stats of the playlist created. % happy and % energetic...
+Option to filter in two different playlist categorised by mood of songs
+
+# Completed stories
 S-1 Given an artist, get top tracks
 S-2 Create playlist from website
 S-3 Implement React
@@ -39,35 +48,8 @@ S-26 Go live, autoselect in dropdown, permissions change
 S-27 Small update
 S-28 Add google analytics
 S-29 Fix state naming convention
+S-30 Change repository name to songbinator
+S-31 Direct link to spotify browser when playlist is created
+S-32 Clean code
 
-BACKLOG
-Contemplate rate limit for API
-Add image within artist in suggestions and in the selected ones
-Filter by date release
-Option to delete suggested artists
-Preview of song 30 seconds artist suggested
-Change repository name to songbinator
-Optimise for phone
-Take first item of array in a more elegant way
-Make repository public without client secret
-Linkedin publication
-Depending on location of user check artists blocked by country
-Direct link to spotify browser when playlist is created
-Add copyright creator of background
-Add it to producthunt
-
-Simple and advance options
-Be able to search for less popular similar artists
-Be able to take not only top tracks but random tracks
-Show stats of the playlist created. Is % happy and energetic...
-Option to filter in two different playlist by mood of songs
-
-
-
-# React
-All React components must act like pure functions with respect to their props.
-The render method will be called each time an update happens
-
-
-# Reference
-https://github.com/Kvaibhav01/Landing-Page-Animation
+Background credits: https://codepen.io/P1N2O/pen/pyBNzX
