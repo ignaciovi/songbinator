@@ -2,3 +2,16 @@ __pycache__
 Songbinator/.env
 flask-backend/services/params.py
 Notes.md
+Songbinator/node_modules
+Songbinator/.pnp
+Songbinator/.pnp.js
+Songbinator/coverage
+Songbinator/build
+Songbinator/.DS_Store
+Songbinator/.env.local
+Songbinator/.env.development.local
+Songbinator/.env.test.local
+Songbinator/.env.production.local
+Songbinator/.ipynb_checkpoints
+Build.ipynb
+Songbinator/.env
