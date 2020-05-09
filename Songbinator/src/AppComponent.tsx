@@ -2,33 +2,34 @@ import * as React from 'react';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import './AppComponent.css';
+import { ArtistBox } from './ArtistBox';
 
 interface ITracks {
-    tracks:ITrackDetails[]
-  }
+  tracks:ITrackDetails[]
+}
   
-  interface ITrackDetails {
-    track_name:string
-    track_id:string
-  }
+interface ITrackDetails {
+  track_name:string
+  track_id:string
+}
   
-  interface IArtist {
-    name:string
-  }
+interface IArtist {
+  name:string
+}
   
-  interface IPayload {
-    tracks:ITracks
-    playlist:string
-  }
+interface IPayload {
+  tracks:ITracks
+  playlist:string
+}
   
-  interface IDispatchProps { 
-  };
+interface IDispatchProps { 
+};
   
-  interface IStateProps { 
-    artist:string 
-    tracksState:ITracks
-    loader:boolean
-    artistList:IArtist[]
+interface IStateProps { 
+  artist:string 
+  tracksState:ITracks
+  loader:boolean
+  artistList:IArtist[]
 	suggestedArtists:IArtist[]
 	playlistName:string
 	progress:number
@@ -42,13 +43,10 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 			loader:false, artistList:[], suggestedArtists:[], playlistName:"",
 			progress:0, playlistId:""};
 
-		// this.addArtist = this.addArtist.bind(this);
-		this.removeArtist = this.removeArtist.bind(this);
+		this.updateArtistList = this.updateArtistList.bind(this);
 	}
 
-	removeArtist(index:number) {
-		let artistList:IArtist[] = this.state.artistList
-		artistList.splice(index,1)
+	updateArtistList(artistList:IArtist[]){
 		this.setState({artistList: artistList})
 	}
 
@@ -232,13 +230,13 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 								{this.state.artistList.length === 0 && <div className="artistText"> Type artist </div>}
 								{this.state.artistList && this.state.artistList.map((item, index) =>
 										(
-										<div className="box artistComponent" id="boxEffect" key={index}>
-												<div className="selectedArtist">
-												<p>{item.name}</p>
-												<button className="button XButton" onClick={() => this.removeArtist(index)}>X</button>
-												</div>
-												</div>
-										)
+											<ArtistBox 
+												index={index}
+												name={item.name}
+												artistList={this.state.artistList}
+												updateArtistList={this.updateArtistList}
+											/>
+									)
 									)
 								}
 						</div>
