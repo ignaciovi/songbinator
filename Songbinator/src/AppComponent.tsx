@@ -2,7 +2,7 @@ import * as React from 'react';
 import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import './AppComponent.css';
-import { ArtistBox } from './ArtistBox';
+import { ArtistComponent } from './ArtistComponent';
 
 interface ITracks {
   tracks:ITrackDetails[]
@@ -230,7 +230,7 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 								{this.state.artistList.length === 0 && <div className="artistText"> Type artist </div>}
 								{this.state.artistList && this.state.artistList.map((item, index) =>
 										(
-											<ArtistBox 
+											<ArtistComponent 
 												index={index}
 												name={item.name}
 												artistList={this.state.artistList}
