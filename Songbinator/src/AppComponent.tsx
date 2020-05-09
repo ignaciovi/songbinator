@@ -3,6 +3,7 @@ import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import './AppComponent.css';
 import { ArtistComponent } from './ArtistComponent';
+import { PlaylistCreated } from './PlaylistCreated';
 
 interface ITracks {
   tracks:ITrackDetails[]
@@ -240,9 +241,12 @@ export class AppComponent extends React.Component<IDispatchProps, IStateProps> {
 									)
 								}
 						</div>
-					</div> : <h2 className="subtitle"> Playlist created! Search for "{this.state.playlistName}" in your Spotify App. 
-					<br />Thank you! 
-					<br /><br /><button className="button is-success"><a className="spotifyLink" href={"https://open.spotify.com/playlist/" + this.state.playlistId}>Open on Spotify Web</a></button></h2>}
+					</div> : 
+					<PlaylistCreated
+						playlistName={this.state.playlistName}
+						playlistId={this.state.playlistId}
+					/>
+					}
         		</div> : <h2 className="subtitle">Loading... {this.state.progress}%</h2>}
 			</div>
 			);
