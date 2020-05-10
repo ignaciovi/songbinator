@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './PlaylistCreationTool.css';
-import { ArtistComponent } from './ArtistComponent';
 import { InputContainer } from './InputContainer';
+import { ArtistsContainer } from './ArtistsContainer';
 
 export interface IArtist {
   name:string
@@ -46,20 +46,10 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 					artistList={this.state.artistList}
 				/> 
 
-				<div className="artistContainer">
-					{this.state.artistList.length === 0 && <div className="artistText"> Type artist </div>}
-					{this.state.artistList && this.state.artistList.map((item, index) =>
-							(
-								<ArtistComponent 
-									index={index}
-									name={item.name}
-									artistList={this.state.artistList}
-									updateArtistList={this.updateArtistList}
-								/>
-						)
-							)
-						}
-				</div>
+				<ArtistsContainer
+					artistList={this.state.artistList}
+					updateArtistList={this.updateArtistList}
+				/>
 			</div>
     )
   }
