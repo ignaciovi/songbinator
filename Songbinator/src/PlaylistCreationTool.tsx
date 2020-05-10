@@ -4,10 +4,6 @@ import axios from 'axios';
 import Autosuggest from 'react-autosuggest';
 import { ArtistComponent } from './ArtistComponent';
 
-interface ITracks {
-  tracks:ITrackDetails[]
-}
-  
 interface ITrackDetails {
   track_name:string
   track_id:string
@@ -18,13 +14,13 @@ export interface IArtist {
 }
   
 interface IPayload {
-  tracks:ITracks
+  tracks:ITrackDetails[]
   playlist:string
 }
   
 interface IStateProps { 
   artist:string 
-  tracksState:ITracks
+  tracksState:ITrackDetails[]
   artistList:IArtist[]
 	suggestedArtists:IArtist[]
 };
@@ -40,23 +36,23 @@ interface IProps {
 export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
   constructor(props:IProps) {
 		super(props);
-		this.state = {artist:"", tracksState: {tracks:[]},
+		this.state = {artist:"", tracksState: [],
 			artistList:[], suggestedArtists:[] };
 
 		this.updateArtistList = this.updateArtistList.bind(this);
-		this.updateTrackState = this.updateTrackState.bind(this);
 	}
 
 	updateArtistList(artistList:IArtist[]){
-		this.setState({artistList: artistList})
+		this.setState({
+			artistList: artistList
+		});
 	}
 
-	updateTrackState(track_collection_dict:any){
-		this.setState({tracksState:track_collection_dict})  
+	updateTrackState(track_collection:ITrackDetails[]){
+		this.setState({
+			tracksState:track_collection
+		});
 	}
-
-
-	
 
 	renderSuggestion = (suggestion:IArtist) => (
 		<div>
@@ -64,7 +60,7 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 		</div>
 	);
 
-	onChange = (event:any) => {
+	onChangeArtist = (event:any) => {
 		this.setState({
 			artist: event.target.value
 		});
@@ -85,65 +81,47 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
   }
 
 	async createPlaylist() {
-		let fetched_related_artists:any = {related_artists:[]};
-		let fetched_tracks:any = {tracks:[]};
 		let track_collection:any = []
-		let track_collection_dict:any = {tracks:[]};
 		let related_artists:IArtist[] = []
 		this.props.updateIsLoading(true)
 	
 		try {
 			for (let input_artist of this.state.artistList) {
-				console.log("printing input artist" + input_artist.name)
-				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artistList.length);    
+				let fetched_related_artists:any = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artistList.length);    
 				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
 			}
 
-			let related_artists_filter_dup = related_artists.reduce((unique:IArtist[], o:IArtist) => {
+			let related_artists_filter_dup:any = related_artists.reduce((unique:IArtist[], o:IArtist) => {
 				if(!unique.some(obj => obj.name === o.name)) {
 					unique.push(o);
 				}
 				return unique;
 			},[]);
 			
-			// Unable to perform .forEach with async calls. Also .entries() doesnt work in TS
 			let index = 0
 			for (let related_artist of related_artists_filter_dup) {
-				// console.log("printing related artist" + related_artist.name)
-				fetched_tracks = await axios.get('/getTracks?name=' + related_artist.name);
-				// console.log("printing fetched track" + fetched_tracks.data.tracks[0].track_name)
-				let progress = Math.floor(index / related_artists_filter_dup.length * 100 * 0.9);
-				console.log(progress)
+				let fetched_tracks:any = await axios.get('/getTracks?name=' + related_artist.name);
+				let progressNumber = Math.floor(index / related_artists_filter_dup.length * 100 * 0.9);
 				index += 1;
-				this.props.updateProgress(progress);
+				this.props.updateProgress(progressNumber);
 				track_collection = track_collection.concat(fetched_tracks.data.tracks);
-				// It retrieves all tracks until this point
 			}
 
-			if (track_collection) {
-				track_collection_dict.tracks = track_collection
-			}
-
-			// console.log("trackstate before" + this.state.tracksState.tracks[0])
-			this.updateTrackState(track_collection_dict)
-			
-			// console.log("trackstate after" + this.state.tracksState.tracks[0].track_name)
+			this.updateTrackState(track_collection)
 
 			let playlist = await axios.get('/createPlaylist?name=' + this.props.playlistName);
 
 			this.props.updatePlaylistId(playlist.data.playlist_id)  
 
-			const payload:IPayload = {tracks:{tracks:track_collection}, 
+			const payload:IPayload = {tracks:track_collection, 
 				playlist:playlist.data.playlist_id}
-			
-			console.log("printing track name in payload")
-			console.log(payload.tracks.tracks[0].track_name)
 
 			await axios.post('/addTracks', payload)
 
 			this.props.updateIsLoading(false)
 
 		} catch (error) {}
+			//TODO Error handling
 
 		}
 
@@ -202,7 +180,7 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 		const inputProps = {
 			placeholder: 'Type artist',
 			value:this.state.artist,
-			onChange: this.onChange,
+			onChange: this.onChangeArtist,
 			onKeyDown: onKeyDown
 			};
 

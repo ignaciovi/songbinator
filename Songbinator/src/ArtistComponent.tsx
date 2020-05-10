@@ -6,14 +6,14 @@ interface IStateProps {
   name:string;
   index:number;
   artistList:IArtist[];
-  };
+};
 
 interface IDispatchProps {
   updateArtistList:(payload:IArtist[]) => any
 }
   
 export class ArtistComponent extends React.Component<IStateProps & IDispatchProps> {
-  removeArtist(index:number) {
+  removeArtist(index:number){
     const removedArtistList:IArtist[] = this.props.artistList
     removedArtistList.splice(index,1)
 		this.props.updateArtistList(removedArtistList)
