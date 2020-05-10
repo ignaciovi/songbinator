@@ -21,7 +21,6 @@ export class AppComponent extends React.Component<{},IStateProps> {
 			this.updateProgress = this.updateProgress.bind(this);
 	}
 
-
 	updateIsLoading(isLoading:boolean){
 		this.setState({isLoading: isLoading})
 	}

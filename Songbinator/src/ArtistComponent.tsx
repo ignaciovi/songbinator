@@ -2,18 +2,16 @@ import * as React from 'react';
 import './ArtistComponent.css';
 import { IArtist } from './PlaylistCreationTool';
 
-interface IStateProps { 
+interface IProps { 
   name:string;
   index:number;
   artistList:IArtist[];
-  };
-
-interface IDispatchProps {
   updateArtistList:(payload:IArtist[]) => any
-}
+};
+
   
-export class ArtistComponent extends React.Component<IStateProps & IDispatchProps> {
-  removeArtist(index:number) {
+export class ArtistComponent extends React.Component<IProps> {
+  removeArtist(index:number){
     const removedArtistList:IArtist[] = this.props.artistList
     removedArtistList.splice(index,1)
 		this.props.updateArtistList(removedArtistList)

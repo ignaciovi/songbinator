@@ -3,7 +3,7 @@ import requests
 
 def addTracksToPlaylist(tracks, playlist):
     access_token = request.cookies.get("spotify_token")
-    track_list = ["spotify:track:" + track["track_id"] for track in tracks["tracks"]]
+    track_list = ["spotify:track:" + track["track_id"] for track in tracks]
     payload=  {
         "uris": track_list
     }
