@@ -11,16 +11,16 @@ ReactGA.initialize('UA-156008572-1');
 export default class App extends React.Component {
 
   render() {
-    const logged = Cookies.get('spotify_code') === undefined ? false : true;
+    const isLogged = Cookies.get('spotify_code') === undefined ? false : true;
 
     ReactGA.pageview(window.location.pathname + window.location.search)
     
     return (
       <div className="App">
-        {!logged ?
-          <Login />
-          : 
-          <AppComponent />
+        {isLogged ?
+          <AppComponent/>
+          :
+          <Login/>         
         }
       </div>
     );

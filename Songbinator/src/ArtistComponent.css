@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
+
+.artistComponent {
+height:70px;
+justify-content: center;
+align-items: center;
+margin:5px;
+padding:15px;
+display: inline-block;
+}
+
+.selectedArtist {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.XButton {
+  margin-left:10px;
+}
+
+#boxEffect {
+    animation: createBox .25s;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+  .artistComponent {
+    height:50px;
+    margin-bottom: 0.75rem;
+  }
+  .selectedArtist {
+    font-size: 10px;
+  }
+  .XButton {
+    height: 25px;
+    margin-left: 5px;
+    padding: 0 5px;
+  }
+}
