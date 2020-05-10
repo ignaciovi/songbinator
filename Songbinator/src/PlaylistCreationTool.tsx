@@ -22,9 +22,6 @@ interface IPayload {
   playlist:string
 }
   
-interface IDispatchProps { 
-};
-  
 interface IStateProps { 
   artist:string 
   tracksState:ITracks
@@ -47,11 +44,19 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 			artistList:[], suggestedArtists:[] };
 
 		this.updateArtistList = this.updateArtistList.bind(this);
+		this.updateTrackState = this.updateTrackState.bind(this);
 	}
 
 	updateArtistList(artistList:IArtist[]){
 		this.setState({artistList: artistList})
 	}
+
+	updateTrackState(track_collection_dict:any){
+		this.setState({tracksState:track_collection_dict})  
+	}
+
+
+	
 
 	renderSuggestion = (suggestion:IArtist) => (
 		<div>
@@ -66,13 +71,9 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 	};
 
 	async getSuggestions(artist:any) {
-		let fetched_suggestedArtists:any = {suggestedArtists:[]};
-		let fetched_suggestedArtists_data:any[] = []
-	
-		fetched_suggestedArtists = await axios.get('/getSuggestedArtists?name=' + artist.value); 
-		fetched_suggestedArtists_data = fetched_suggestedArtists.data.suggestedArtists
+		let fetched_suggestedArtists:any = await axios.get('/getSuggestedArtists?name=' + artist.value); 
 
-		this.setState({suggestedArtists: fetched_suggestedArtists_data});
+		this.setState({suggestedArtists: fetched_suggestedArtists.data.suggestedArtists});
 	}
 
 	onSuggestionsFetchRequested = (value:any) => {
@@ -93,6 +94,7 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 	
 		try {
 			for (let input_artist of this.state.artistList) {
+				console.log("printing input artist" + input_artist.name)
 				fetched_related_artists = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.state.artistList.length);    
 				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
 			}
@@ -107,26 +109,35 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 			// Unable to perform .forEach with async calls. Also .entries() doesnt work in TS
 			let index = 0
 			for (let related_artist of related_artists_filter_dup) {
+				// console.log("printing related artist" + related_artist.name)
 				fetched_tracks = await axios.get('/getTracks?name=' + related_artist.name);
+				// console.log("printing fetched track" + fetched_tracks.data.tracks[0].track_name)
 				let progress = Math.floor(index / related_artists_filter_dup.length * 100 * 0.9);
 				console.log(progress)
 				index += 1;
 				this.props.updateProgress(progress);
 				track_collection = track_collection.concat(fetched_tracks.data.tracks);
+				// It retrieves all tracks until this point
 			}
 
 			if (track_collection) {
 				track_collection_dict.tracks = track_collection
 			}
 
-			this.setState({tracksState:track_collection_dict})  
+			// console.log("trackstate before" + this.state.tracksState.tracks[0])
+			this.updateTrackState(track_collection_dict)
+			
+			// console.log("trackstate after" + this.state.tracksState.tracks[0].track_name)
 
 			let playlist = await axios.get('/createPlaylist?name=' + this.props.playlistName);
 
 			this.props.updatePlaylistId(playlist.data.playlist_id)  
 
-			const payload:IPayload = {tracks:this.state.tracksState, 
+			const payload:IPayload = {tracks:{tracks:track_collection}, 
 				playlist:playlist.data.playlist_id}
+			
+			console.log("printing track name in payload")
+			console.log(payload.tracks.tracks[0].track_name)
 
 			await axios.post('/addTracks', payload)
 
@@ -218,11 +229,11 @@ export class PlaylistCreationTool extends React.Component<IProps, IStateProps> {
 							{this.state.artistList.length > 0 && <input className="input" type="text" onChange={this.onChangePlaylist} value={this.props.playlistName} placeholder="Playlist name"></input>}
 						</div>
 
-						{this.state.tracksState.tracks && this.state.tracksState.tracks.map((item) =>
+						{/* {this.state.tracksState.tracks && this.state.tracksState.tracks.map((item) =>
 								(
 								<p>{item.track_name}</p>
 								))
-						}
+						} */}
 
 						<div className="artistContainer">
 								{this.state.artistList.length === 0 && <div className="artistText"> Type artist </div>}
