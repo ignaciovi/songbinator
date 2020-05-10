@@ -1,9 +1,6 @@
 import * as React from 'react';
 import './ArtistComponent.css';
-
-interface IArtist {
-  name:string
-}
+import { IArtist } from './PlaylistCreationTool';
 
 interface IStateProps { 
   name:string;
