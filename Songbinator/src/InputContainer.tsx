@@ -11,8 +11,7 @@ interface IPayload {
   
 interface IStateProps { 
   artist:string 
-  tracksState:ITrackDetails[]
-  
+  tracksList:ITrackDetails[]
   suggestedArtists:IArtist[]
 };
   
@@ -23,7 +22,7 @@ interface ITrackDetails {
 
 interface IParentProps {
   artistList:IArtist[]
-  playlistName:string;
+  playlistName:string
   updateArtistList:(payload:IArtist[]) => any
   updateIsLoading:(isLoading:boolean) => any
 	updatePlaylistName:(playlistName:any) => any
@@ -34,36 +33,36 @@ interface IParentProps {
 export class InputContainer extends React.Component<IParentProps,IStateProps> {
   constructor(props:IParentProps) {
 		super(props);
-		this.state = {artist:"", tracksState: [], suggestedArtists:[] };
+		this.state = {artist:"", tracksList: [], suggestedArtists:[] };
   }
   
   onSuggestionsFetchRequested = (value:any) => {
 		this.getSuggestions(value)
-  };
-  
-  updateTrackState(track_collection:ITrackDetails[]){
-		this.setState({
-			tracksState:track_collection
-		});
-	}
+	};
+	
+	async getSuggestions(artist:any) {
+		let fetched_suggestedArtists:any = await axios.get('/getSuggestedArtists?name=' + artist.value); 
 
+		this.setState({suggestedArtists: fetched_suggestedArtists.data.suggestedArtists});
+	}
+	
 	renderSuggestion = (suggestion:IArtist) => (
 		<div>
 			{suggestion.name}
 		</div>
 	);
 
+  updateTracksList(track_collection:ITrackDetails[]){
+		this.setState({
+			tracksList:track_collection
+		});
+	}
+
 	onChangeArtist = (event:any) => {
 		this.setState({
 			artist: event.target.value
 		});
 	};
-
-	async getSuggestions(artist:any) {
-		let fetched_suggestedArtists:any = await axios.get('/getSuggestedArtists?name=' + artist.value); 
-
-		this.setState({suggestedArtists: fetched_suggestedArtists.data.suggestedArtists});
-	}
 
 	onChangePlaylist = (event:any) => {
     this.props.updatePlaylistName(event.target.value);
@@ -96,7 +95,7 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 				track_collection = track_collection.concat(fetched_tracks.data.tracks);
 			}
 
-			this.updateTrackState(track_collection)
+			this.updateTracksList(track_collection)
 
 			let playlist = await axios.get('/createPlaylist?name=' + this.props.playlistName);
 
@@ -111,39 +110,25 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 
 		} catch (error) {}
 			//TODO Error handling
-
 		}
 
-  
   render() {
-
-    const getIsAddDisabled = () => {
-			let isArtistInSuggested:boolean = false
-			this.state.suggestedArtists.forEach((item) =>
-			{
-				if (item.name === this.state.artist){
-					isArtistInSuggested = true;
-				}
-			})
-
-			let isDuplicatedArtist:boolean = false;
-			this.props.artistList.forEach((item) =>
-			{
-				if (item.name === this.state.artist){
-					isDuplicatedArtist = true;
-				}
-			})
-
-			const disabledAdd = !isArtistInSuggested || isDuplicatedArtist || this.props.artistList.length > 15;
-
-			return disabledAdd
-		}
 		
-		const disabledAdd = getIsAddDisabled()
+		let isAddDisabled:boolean = (() => {
+			let isArtistInSuggested:boolean = 
+				(this.state.suggestedArtists.filter(artist => artist.name === this.state.artist)).length !== 0
 
+			let isDuplicatedArtist:boolean = 
+				(this.props.artistList.filter(artist => artist.name === this.state.artist)).length !== 0
+
+			let isAddDisabled = !isArtistInSuggested || isDuplicatedArtist || this.props.artistList.length > 15;
+
+			return isAddDisabled
+		})();
+		
 		const addArtist = (artist:string) => {
 			let artistList:IArtist[] = this.props.artistList
-			const mustInclude = (artistList.find(o => o.name === artist)) === undefined || artistList.length === 0;
+			let mustInclude = (artistList.find(o => o.name === artist)) === undefined || artistList.length === 0;
 			if (mustInclude) {
 				artistList = artistList.concat({name:artist})  
 				this.props.updateArtistList(artistList)
@@ -152,10 +137,10 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 			this.setState({suggestedArtists:[]})
 		}
 	
-		let isGoDisabled:boolean = this.props.artistList.length === 0 || this.props.playlistName === "";
+		let isCreatePlaylistDisabled:boolean = this.props.artistList.length === 0 || this.props.playlistName === "";
 
 		const onKeyDown = (event:any) => {
-			if (event.key === 'Enter' && !disabledAdd) {
+			if (event.key === 'Enter' && !isAddDisabled) {
 				addArtist(this.state.artist)
 			}
 		};
@@ -173,11 +158,12 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 			value:this.state.artist,
 			onChange: this.onChangeArtist,
 			onKeyDown: onKeyDown
-      };
+    };
       
     return (
       <div className="box mainBox">
         <div className="inputBox">
+
           <div className="menuInput">
             <Autosuggest
               suggestions={this.state.suggestedArtists}
@@ -188,13 +174,19 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
               inputProps={inputProps}
             />
           </div>
+
           <div className="menuButtons">
-            <button className="button" disabled={disabledAdd} 
-                onClick={() => addArtist(this.state.artist)}>Add</button>
-            <button className="button" disabled={isGoDisabled} onClick={() => this.createPlaylist()}>Create playlist</button>
+            <button className="button" disabled={isAddDisabled} 
+              onClick={() => addArtist(this.state.artist)}>Add</button>
+						<button className="button" disabled={isCreatePlaylistDisabled} 
+							onClick={() => this.createPlaylist()}>Create playlist</button>
           </div>
+
         </div>
-        {this.props.artistList.length > 0 && <input className="input" type="text" onChange={this.onChangePlaylist} value={this.props.playlistName} placeholder="Playlist name"></input>}
+
+        {this.props.artistList.length > 0 && 
+					<input className="input" type="text" 
+						onChange={this.onChangePlaylist} value={this.props.playlistName} placeholder="Playlist name"></input>}
       </div>
     )
   }
