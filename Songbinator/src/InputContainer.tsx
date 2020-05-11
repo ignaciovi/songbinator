@@ -21,7 +21,7 @@ interface ITrackDetails {
   track_id:string
 }
 
-interface IProps {
+interface IParentProps {
   artistList:IArtist[]
   playlistName:string;
   updateArtistList:(payload:IArtist[]) => any
@@ -31,8 +31,8 @@ interface IProps {
 	updateProgress:(progress:number) => any
 }
   
-export class InputContainer extends React.Component<IProps,IStateProps> {
-  constructor(props:IProps) {
+export class InputContainer extends React.Component<IParentProps,IStateProps> {
+  constructor(props:IParentProps) {
 		super(props);
 		this.state = {artist:"", tracksState: [], suggestedArtists:[] };
   }

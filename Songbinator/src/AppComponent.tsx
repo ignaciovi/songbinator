@@ -1,7 +1,7 @@
 import * as React from 'react';
-
 import { PlaylistCreated } from './PlaylistCreated';
 import { PlaylistCreationTool } from './PlaylistCreationTool';
+import './AppComponent.css';
 
 interface IStateProps { 
 	isLoading:boolean
@@ -25,7 +25,7 @@ export class AppComponent extends React.Component<{},IStateProps> {
 		this.setState({isLoading: isLoading})
 	}
 
-	updatePlaylistName(playlistName:any){
+	updatePlaylistName(playlistName:string){
 		this.setState({playlistName: playlistName})
 	}
 
@@ -61,6 +61,6 @@ export class AppComponent extends React.Component<{},IStateProps> {
 				</div>
 				}
 			</div>
-			);
-		}
+		);
 	}
+}

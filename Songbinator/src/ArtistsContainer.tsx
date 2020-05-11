@@ -1,19 +1,21 @@
 import * as React from 'react';
-import './PlaylistCreated.css';
+import './ArtistsContainer.css';
 import { ArtistComponent } from './ArtistComponent';
 import { IArtist } from './PlaylistCreationTool';
 
-interface IStateProps { 
+interface IParentProps { 
   artistList:IArtist[];
   updateArtistList:(payload:IArtist[]) => any
   };
   
-export class ArtistsContainer extends React.Component<IStateProps> {
+export class ArtistsContainer extends React.Component<IParentProps> {
   render() {
     return (
       <div className="artistContainer">
-        {this.props.artistList.length === 0 && <div className="artistText"> Type artist </div>}
-        {this.props.artistList && this.props.artistList.map((item, index) =>
+        {!this.props.artistList ? 
+          <div className="artistText"> Type artist </div>
+          :
+          <div>{this.props.artistList && this.props.artistList.map((item, index) =>
             (
               <ArtistComponent 
                 index={index}
@@ -21,10 +23,10 @@ export class ArtistsContainer extends React.Component<IStateProps> {
                 artistList={this.props.artistList}
                 updateArtistList={this.props.updateArtistList}
               />
-            )
-          )
+            ))}
+          </div>
         }
-			</div>
+      </div>
     )
   }
 }

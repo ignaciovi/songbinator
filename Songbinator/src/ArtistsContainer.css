@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
-
 .artistContainer{
   width:500px;
   height:400px;
@@ -8,7 +6,6 @@
 
 /* Desktop Styles */
 @media only screen and (min-width: 961px) {
-
   .artistContainer {
     padding:30px;
   }

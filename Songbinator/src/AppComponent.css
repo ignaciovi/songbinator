@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
+
+.subtitle{
+    font-family: 'Montserrat', sans-serif;
+    color:#ffffff;
+    font-weight: bold;
+    font-size:25px;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+	.subtitle{
+    font-size:15px;
+	}
+}
