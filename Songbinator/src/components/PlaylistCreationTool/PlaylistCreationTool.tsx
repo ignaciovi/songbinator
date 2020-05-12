@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './PlaylistCreationTool.css';
-import { InputContainer } from './InputContainer';
-import { ArtistsContainer } from './ArtistsContainer';
+import { InputContainer } from '../InputContainer/InputContainer';
+import { ArtistsContainer } from '../ArtistsContainer/ArtistsContainer';
 
 export interface IArtist {
   name:string

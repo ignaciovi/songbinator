@@ -2,8 +2,8 @@ import React from 'react';
 import Cookies from 'js-cookie';
 import './App.css';
 import 'bulma/css/bulma.css'
-import { Login } from './Login';
-import { AppComponent } from './AppComponent';
+import { Login } from './components/Login/Login';
+import { AppComponent } from './components/AppComponent/AppComponent';
 import ReactGA from 'react-ga';
 
 ReactGA.initialize('UA-156008572-1');

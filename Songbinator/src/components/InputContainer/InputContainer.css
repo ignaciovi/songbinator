@@ -1,9 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,700'); /* import Montserrat font  */
-
 .inputBox {
-    text-align:center;
-    height: min-content;
-    width: min-content;
+  text-align:center;
+  height: min-content;
+  width: min-content;
 }
 
 .menuInput {
