@@ -1,10 +1,11 @@
 import * as React from 'react';
 import './InputContainer.css';
 import Autosuggest from 'react-autosuggest';
-import axios from 'axios';
 import { IArtist } from './PlaylistCreationTool';
+import { getSuggestionsService, getSimilarArtistsService, createPlaylistService,
+	getTracksService, addTracksService } from './services/services';
 
-interface IPayload {
+export interface IPayload {
   tracks:ITrackDetails[]
   playlist:string
 }
@@ -41,9 +42,8 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 	};
 	
 	async getSuggestions(artist:any) {
-		let fetched_suggestedArtists:any = await axios.get('/getSuggestedArtists?name=' + artist.value); 
-
-		this.setState({suggestedArtists: fetched_suggestedArtists.data.suggestedArtists});
+		getSuggestionsService(artist.value).then(res => this.setState({suggestedArtists: res.data.suggestedArtists})
+		);
 	}
 	
 	renderSuggestion = (suggestion:IArtist) => (
@@ -75,7 +75,7 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 	
 		try {
 			for (let input_artist of this.props.artistList) {
-				let fetched_related_artists:any = await axios.get('/getSimilarArtists?name=' + input_artist.name + "&artists=" + this.props.artistList.length);    
+				let fetched_related_artists:any = await getSimilarArtistsService(input_artist.name, this.props.artistList.length)
 				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
 			}
 
@@ -88,7 +88,7 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 			
 			let index = 0
 			for (let related_artist of related_artists_filter_dup) {
-				let fetched_tracks:any = await axios.get('/getTracks?name=' + related_artist.name);
+				let fetched_tracks:any = await getTracksService(related_artist.name);
 				let progressNumber = Math.floor(index / related_artists_filter_dup.length * 100 * 0.9);
 				index += 1;
 				this.props.updateProgress(progressNumber);
@@ -97,19 +97,18 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 
 			this.updateTracksList(track_collection)
 
-			let playlist = await axios.get('/createPlaylist?name=' + this.props.playlistName);
-
+			let playlist = await createPlaylistService(this.props.playlistName);
 			this.props.updatePlaylistId(playlist.data.playlist_id)  
 
 			const payload:IPayload = {tracks:track_collection, 
 				playlist:playlist.data.playlist_id}
 
-			await axios.post('/addTracks', payload)
+			addTracksService(payload)
 
 			this.props.updateIsLoading(false)
 
 		} catch (error) {}
-			//TODO Error handling
+			console.log("Error")
 		}
 
   render() {
