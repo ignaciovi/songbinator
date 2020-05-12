@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './ArtistsContainer.css';
-import { ArtistComponent } from './ArtistComponent';
-import { IArtist } from './PlaylistCreationTool';
+import { ArtistComponent } from '../ArtistComponent/ArtistComponent';
+import { IArtist } from '../PlaylistCreationTool/PlaylistCreationTool';
 
 interface IParentProps { 
   artistList:IArtist[];

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './ArtistComponent.css';
-import { IArtist } from './PlaylistCreationTool';
+import { IArtist } from '../PlaylistCreationTool/PlaylistCreationTool';
 
 interface IParentProps { 
   name:string;

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IPayload } from '../InputContainer';
+import { IPayload } from '../components/InputContainer/InputContainer';
 
 export const getSuggestionsService = async (artist:string) => await axios.get('/getSuggestedArtists?name=' + artist);
 export const getSimilarArtistsService = async (artistName:string, artistListLenght:number) => await axios.get('/getSimilarArtists?name=' + artistName + "&artists=" + artistListLenght);

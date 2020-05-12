@@ -1,9 +1,9 @@
 import * as React from 'react';
 import './InputContainer.css';
 import Autosuggest from 'react-autosuggest';
-import { IArtist } from './PlaylistCreationTool';
+import { IArtist } from '../PlaylistCreationTool/PlaylistCreationTool';
 import { getSuggestionsService, getSimilarArtistsService, createPlaylistService,
-	getTracksService, addTracksService } from './services/services';
+	getTracksService, addTracksService } from '../../services/services';
 
 export interface IPayload {
   tracks:ITrackDetails[]

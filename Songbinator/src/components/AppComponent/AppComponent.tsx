@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { PlaylistCreated } from './PlaylistCreated';
-import { PlaylistCreationTool } from './PlaylistCreationTool';
+import { PlaylistCreated } from '../PlaylistCreated/PlaylistCreated';
+import { PlaylistCreationTool } from '../PlaylistCreationTool/PlaylistCreationTool';
 import './AppComponent.css';
 
 interface IStateProps { 
