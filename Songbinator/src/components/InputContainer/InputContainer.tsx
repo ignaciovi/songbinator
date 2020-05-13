@@ -13,7 +13,8 @@ export interface IPayload {
 interface IStateProps { 
   artist:string 
   tracksList:ITrackDetails[]
-  suggestedArtists:IArtist[]
+	suggestedArtists:IArtist[]
+	error:boolean
 };
   
 interface ITrackDetails {
@@ -34,11 +35,11 @@ interface IParentProps {
 export class InputContainer extends React.Component<IParentProps,IStateProps> {
   constructor(props:IParentProps) {
 		super(props);
-		this.state = {artist:"", tracksList: [], suggestedArtists:[] };
+		this.state = {artist:"", tracksList: [], suggestedArtists:[], error:false };
   }
   
   onSuggestionsFetchRequested = (value:any) => {
-		this.getSuggestions(value)
+		this.getSuggestions(value);
 	};
 	
 	async getSuggestions(artist:any) {
@@ -69,14 +70,14 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
   }
 
 	async createPlaylist() {
-		let track_collection:any = []
-		let related_artists:IArtist[] = []
-		this.props.updateIsLoading(true)
+		let track_collection:any = [];
+		let related_artists:IArtist[] = [];
+		this.props.updateIsLoading(true);
 	
 		try {
 			for (let input_artist of this.props.artistList) {
-				let fetched_related_artists:any = await getSimilarArtistsService(input_artist.name, this.props.artistList.length)
-				related_artists = related_artists.concat(fetched_related_artists.data.related_artists)
+				let fetched_related_artists:any = await getSimilarArtistsService(input_artist.name, this.props.artistList.length);
+				related_artists = related_artists.concat(fetched_related_artists.data.related_artists);
 			}
 
 			let related_artists_filter_dup:any = related_artists.reduce((unique:IArtist[], o:IArtist) => {
@@ -95,52 +96,54 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 				track_collection = track_collection.concat(fetched_tracks.data.tracks);
 			}
 
-			this.updateTracksList(track_collection)
+			this.updateTracksList(track_collection);
 
 			let playlist = await createPlaylistService(this.props.playlistName);
-			this.props.updatePlaylistId(playlist.data.playlist_id)  
+			this.props.updatePlaylistId(playlist.data.playlist_id);
 
 			const payload:IPayload = {tracks:track_collection, 
-				playlist:playlist.data.playlist_id}
+				playlist:playlist.data.playlist_id};
 
-			addTracksService(payload)
+			addTracksService(payload);
 
-			this.props.updateIsLoading(false)
+			this.props.updateIsLoading(false);
 
-		} catch (error) {}
-			console.log("Error")
+		} catch (err) {
+			this.setState({error:true})
+			console.log(err);
 		}
+	}
 
   render() {
 		
 		let isAddDisabled:boolean = (() => {
 			let isArtistInSuggested:boolean = 
-				(this.state.suggestedArtists.filter(artist => artist.name === this.state.artist)).length !== 0
+				(this.state.suggestedArtists.filter(artist => artist.name === this.state.artist)).length !== 0;
 
 			let isDuplicatedArtist:boolean = 
-				(this.props.artistList.filter(artist => artist.name === this.state.artist)).length !== 0
+				(this.props.artistList.filter(artist => artist.name === this.state.artist)).length !== 0;
 
 			let isAddDisabled = !isArtistInSuggested || isDuplicatedArtist || this.props.artistList.length > 15;
 
-			return isAddDisabled
+			return isAddDisabled;
 		})();
 		
 		const addArtist = (artist:string) => {
-			let artistList:IArtist[] = this.props.artistList
+			let artistList:IArtist[] = this.props.artistList;
 			let mustInclude = (artistList.find(o => o.name === artist)) === undefined || artistList.length === 0;
 			if (mustInclude) {
-				artistList = artistList.concat({name:artist})  
-				this.props.updateArtistList(artistList)
+				artistList = artistList.concat({name:artist});
+				this.props.updateArtistList(artistList);
 			}
-			this.setState({artist:""})
-			this.setState({suggestedArtists:[]})
+			this.setState({artist:""});
+			this.setState({suggestedArtists:[]});
 		}
 	
 		let isCreatePlaylistDisabled:boolean = this.props.artistList.length === 0 || this.props.playlistName === "";
 
 		const onKeyDown = (event:any) => {
 			if (event.key === 'Enter' && !isAddDisabled) {
-				addArtist(this.state.artist)
+				addArtist(this.state.artist);
 			}
 		};
 
@@ -149,7 +152,7 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
 				artist: value.target.innerText
 			});
 
-			addArtist(value.target.innerText)
+			addArtist(value.target.innerText);
 		};
 
 		const inputProps = {
@@ -186,6 +189,15 @@ export class InputContainer extends React.Component<IParentProps,IStateProps> {
         {this.props.artistList.length > 0 && 
 					<input className="input" type="text" 
 						onChange={this.onChangePlaylist} value={this.props.playlistName} placeholder="Playlist name"></input>}
+
+				{this.state.error &&
+					<div className="modal is-active">
+						<div className="modal-background"></div>
+						<div className="modal-content subtitle">
+							There has been an error processing your request. Please try logging in again.
+						</div>
+					</div>
+				}
       </div>
     )
   }
