@@ -3,6 +3,8 @@
 Problem finding a playlist that satisfies the musical taste of you and your group of friends?
 Give us some artists and we will create you a personalised playlist that everyone will like!
 
+**Important:** I'm using a free version of IBM Cloud to host the application, which goes to sleep mode after 10 days of inactivity. The website might not be active at the moment.
+
 http://songbinator.eu-gb.mybluemix.net/
 
 When cloning repository, replace client_id and client_secret with yours
