@@ -17,7 +17,7 @@
     "bulma": "^0.8.0",
     "history": "^4.10.1",
     "js-cookie": "^2.2.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "react": "^16.11.0",
     "react-autosuggest": "^9.4.3",
     "react-bulma-components": "^3.1.3",
